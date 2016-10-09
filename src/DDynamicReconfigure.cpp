@@ -1,5 +1,7 @@
 #include <ddynamic_reconfigure/DDynamicReconfigure.h>
 
+#include <boost/foreach.hpp>
+
 template<class T>
 bool assignValue(std::vector<std::pair<std::string, T*> > v, std::string name, T value){
     for(unsigned int i=0; i<v.size();++i){
@@ -313,5 +315,26 @@ void DDynamicReconfigure::RegisterVariable(std::string *variable, std::string id
     registered_string_.push_back(p);
     if(node_handle_.hasParam(id)){
         node_handle_.param<std::string>(id, *variable, "");
+    }
+}
+
+std::ostream&operator<<(std::ostream& os, const DDynamicReconfigure& ddr)
+{
+    BOOST_FOREACH(const DDynamicReconfigure::RegisteredInt& r, ddr.registered_int_)
+    {
+        os << r.name << ": " << *r.value << std::endl;
+    }
+    BOOST_FOREACH(const DDynamicReconfigure::RegisteredDouble& r, ddr.registered_double_)
+    {
+        os << r.name << ": " << *r.value << std::endl;
+    }
+    typedef std::pair<std::string, bool*> RegisteredBool;
+    BOOST_FOREACH(const RegisteredBool& r, ddr.registered_bool_)
+    {
+        os << r.first << ": " << ((*r.second) ? "true" : "false") << std::endl;
+    }
+    BOOST_FOREACH(const DDynamicReconfigure::RegisteredString& r, ddr.registered_string_)
+    {
+        os << r.name << ": " << *r.value << std::endl;
     }
 }

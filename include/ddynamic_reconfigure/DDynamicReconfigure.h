@@ -89,6 +89,9 @@ public:
   void setUserCallback(const UserCallbackType &callback);
   void clearUserCallback();
 
+  //! out stream operator for printing the current configuration e.g. for debugging
+  friend std::ostream& operator<<(std::ostream&, const DDynamicReconfigure&);
+
 private:
   ros::NodeHandle node_handle_;
   ros::ServiceServer set_service_;

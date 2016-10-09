@@ -40,19 +40,12 @@ int main(int argc, char **argv) {
   ddr2.PublishServicesTopics();
   ddr3.PublishServicesTopics();
 
+  ddr.setUserCallback([&ddr](){ std::cout << std::endl << ddr; });
+
 
   ROS_INFO("Spinning node");
 
-  while(nh.ok()){
-    std::cerr<<"double "<<double_test<<std::endl;
-    std::cerr<<"double range"<<double_range<<std::endl;
-    std::cerr<<"int "<<int_test<<std::endl;
-    std::cerr<<"bool "<<bool_test<<std::endl;
-    std::cerr<<"*********"<<std::endl;
-    ros::spinOnce();
-    ros::Duration(1.0).sleep();
-
-  }
+  ros::spin();
   return 0;
 }
 
