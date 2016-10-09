@@ -8,6 +8,13 @@ find_package(catkin REQUIRED COMPONENTS
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 
+#add dynamic reconfigure api
+#find_package(catkin REQUIRED dynamic_reconfigure)
+generate_dynamic_reconfigure_options(
+  cfg/Tutorials.cfg
+)
+
+
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ${PROJECT_NAME}
@@ -19,19 +26,15 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-#add dynamic reconfigure api
-#find_package(catkin REQUIRED dynamic_reconfigure)
-#generate_dynamic_reconfigure_options(
-#  cfg/Tutorials.cfg
-#)
 
 add_library(${PROJECT_NAME} src/DDynamicReconfigure.cpp)
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
-#add_executable(dynamic_reconfigure_node src/dynamic_reconfigure_node.cpp)
-#target_link_libraries(dynamic_reconfigure_node ${catkin_LIBRARIES})
+
+add_executable(dynamic_reconfigure_node src/dynamic_reconfigure_node.cpp)
+target_link_libraries(dynamic_reconfigure_node ${catkin_LIBRARIES})
 
 #make sure configure headers are built before any node using them
-#add_dependencies(dynamic_reconfigure_node ${PROJECT_NAME}_gencfg)
+add_dependencies(dynamic_reconfigure_node ${PROJECT_NAME}_gencfg)
 
 #############  Test #################
 add_executable(fake_dynamic_reconfigure_server test/fake_dynamic_reconfigure_server.cpp)
