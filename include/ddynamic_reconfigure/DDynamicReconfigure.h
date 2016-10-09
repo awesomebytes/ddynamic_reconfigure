@@ -46,6 +46,11 @@ class DDynamicReconfigure{
 
   };
 
+  struct RegisteredString{
+      std::string name;
+      std::string *value;
+  };
+
 public:
   DDynamicReconfigure(const ros::NodeHandle &nh = ros::NodeHandle("~"));
 
@@ -60,6 +65,8 @@ public:
   void RegisterVariable(double *variable, std::string id, double min, double max);
 
   void RegisterVariable(bool *variable, std::string id);
+
+  void RegisterVariable(std::string *variable, std::string id);
 
   void generateConfigDescription();
 
@@ -94,6 +101,7 @@ private:
   std::vector< RegisteredInt> registered_int_;
   std::vector< RegisteredDouble> registered_double_;
   std::vector<std::pair<std::string, bool*> > registered_bool_;
+  std::vector< RegisteredString> registered_string_;
 
   dynamic_reconfigure::ConfigDescription configDescription_;
   dynamic_reconfigure::Config configMessage_;

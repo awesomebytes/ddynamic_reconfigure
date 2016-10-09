@@ -20,6 +20,7 @@ int main(int argc, char **argv) {
   double double_range = 2;
   int int_test = 0;
   bool bool_test = false;
+  std::string string_test;
 
   DDynamicReconfigure ddr(nh);
   DDynamicReconfigure ddr2(ros::NodeHandle(nh, "nh2"));
@@ -29,6 +30,7 @@ int main(int argc, char **argv) {
   ddr.RegisterVariable(&double_range, "double_range_test", 0, 10);
   ddr.RegisterVariable(&int_test, "int_test");
   ddr.RegisterVariable(&bool_test, "bool_test");
+  ddr.RegisterVariable(&string_test, "string_test");
 
   ddr2.RegisterVariable(&double_test, "double_test");
   ddr2.RegisterVariable(&int_test, "int_test");

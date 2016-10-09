@@ -58,6 +58,11 @@ bool DDynamicReconfigure::setConfigCallback(dynamic_reconfigure::Reconfigure::Re
             ROS_ERROR_STREAM("Variable :"<<req.config.bools[i].name<<" not registered");
         }
     }
+    for(unsigned int i=0; i<req.config.strs.size(); ++i){
+        if(!assignValue(registered_string_, req.config.strs[i].name, req.config.strs[i].value)){
+            ROS_ERROR_STREAM("Variable :"<<req.config.strs[i].name<<" not registered");
+        }
+    }
 
     /*
       boost::recursive_mutex::scoped_lock lock(mutex_);
@@ -174,6 +179,23 @@ void DDynamicReconfigure::generateConfigDescription(){
         bp.value = false;
         configDescription_.min.bools.push_back(bp);
     }
+
+    for(unsigned int i=0; i<registered_string_.size(); ++i){
+        dynamic_reconfigure::ParamDescription p;
+        p.name  = registered_string_[i].name;
+        //p.description = registered_double_[i].first;
+        p.level = 0;
+        p.type = "str";
+        gp.parameters.push_back(p);
+        //Max min def
+        dynamic_reconfigure::StrParameter sp;
+        sp.name = registered_string_[i].name;
+        sp.value = *registered_string_[i].value;
+        configDescription_.dflt.strs.push_back(sp);
+        configDescription_.max.strs.push_back(sp);
+        configDescription_.min.strs.push_back(sp);
+    }
+
     configDescription_.groups.push_back(gp);
 }
 
@@ -205,6 +227,13 @@ void DDynamicReconfigure::generateConfig(){
         bp.name = registered_bool_[i].first;
         bp.value = *registered_bool_[i].second;
         c.bools.push_back(bp);
+    }
+
+    for(unsigned int i=0; i<registered_string_.size(); ++i){
+        dynamic_reconfigure::StrParameter dp;
+        dp.name = registered_string_[i].name;
+        dp.value = *registered_string_[i].value;
+        c.strs.push_back(dp);
     }
 
     configMessage_ = c;
@@ -277,3 +306,12 @@ void DDynamicReconfigure::RegisterVariable(bool *variable, std::string id){
     }
 }
 
+void DDynamicReconfigure::RegisterVariable(std::string *variable, std::string id){
+    RegisteredString p;
+    p.name = id;
+    p.value = variable;
+    registered_string_.push_back(p);
+    if(node_handle_.hasParam(id)){
+        node_handle_.param<std::string>(id, *variable, "");
+    }
+}
