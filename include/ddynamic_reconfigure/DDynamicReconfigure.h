@@ -28,8 +28,9 @@ class DDynamicReconfigure{
      int min_value;
 
      RegisteredInt(){
-       max_value = 100;
-       min_value = -100;
+       max_value = std::numeric_limits<int>::max();
+       // TODO: remove C++11
+       min_value = std::numeric_limits<int>::lowest();
      }
   };
 
@@ -40,8 +41,8 @@ class DDynamicReconfigure{
       double min_value;
 
       RegisteredDouble(){
-        max_value = 100;
-        min_value = -100;
+        max_value = std::numeric_limits<double>::infinity();
+        min_value = -std::numeric_limits<double>::infinity();
       }
 
   };
