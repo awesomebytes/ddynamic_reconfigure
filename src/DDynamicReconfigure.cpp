@@ -135,7 +135,7 @@ void DDynamicReconfigure::generateConfigDescription(){
         configDescription_.dflt.ints.push_back(ip);
         ip.value = registered_int_[i].max_value;
         configDescription_.max.ints.push_back(ip);
-        ip.value = -registered_int_[i].min_value;
+        ip.value = registered_int_[i].min_value;
         configDescription_.min.ints.push_back(ip);
     }
 
