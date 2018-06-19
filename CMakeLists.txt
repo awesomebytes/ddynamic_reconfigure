@@ -6,6 +6,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
 )
 
+set(CMAKE_CXX_STANDARD 98)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 
 catkin_package(
@@ -25,7 +26,21 @@ include_directories(
 #  cfg/Tutorials.cfg
 #)
 
-add_library(${PROJECT_NAME} src/DDynamicReconfigure.cpp)
+add_library(${PROJECT_NAME}
+        src/DDynamicReconfigure.cpp
+        src/ddynamic_reconfigure.cpp
+        include/ddynamic_reconfigure/ddynamic_reconfigure.h
+        include/ddynamic_reconfigure/dd_param.h
+        src/param/dd_int_param.cpp
+        include/ddynamic_reconfigure/param/dd_int_param.h
+        include/ddynamic_reconfigure/dd_value.h
+        src/param/dd_double_param.cpp
+        include/ddynamic_reconfigure/param/dd_double_param.h
+        src/param/dd_bool_param.cpp
+        include/ddynamic_reconfigure/param/dd_bool_param.h
+        src/param/dd_string_param.cpp
+        include/ddynamic_reconfigure/param/dd_string_param.h
+        )
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 #add_executable(dynamic_reconfigure_node src/dynamic_reconfigure_node.cpp)
 #target_link_libraries(dynamic_reconfigure_node ${catkin_LIBRARIES})
