@@ -40,7 +40,7 @@ add_library(${PROJECT_NAME}
         include/ddynamic_reconfigure/param/dd_bool_param.h
         src/param/dd_string_param.cpp
         include/ddynamic_reconfigure/param/dd_string_param.h
-        )
+        src/param/dd_enum_param.cpp include/ddynamic_reconfigure/param/dd_enum_param.h)
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 #add_executable(dynamic_reconfigure_node src/dynamic_reconfigure_node.cpp)
 #target_link_libraries(dynamic_reconfigure_node ${catkin_LIBRARIES})

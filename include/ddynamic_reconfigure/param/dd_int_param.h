@@ -27,7 +27,7 @@ namespace ddr {
 
         void setValue(Value val);
 
-        DDIntParam(const string &name, unsigned int level, int def, int max = INT32_MAX, int min = INT32_MIN) {
+        inline DDIntParam(const string &name, unsigned int level, int def, int max = INT32_MAX, int min = INT32_MIN) {
             name_ = name;
             level_ = level;
             def_ = def;
@@ -42,6 +42,5 @@ namespace ddr {
         string name_;
     };
 }
-
 
 #endif //DDYNAMIC_RECONFIGURE_DD_INT_PARAM_H
