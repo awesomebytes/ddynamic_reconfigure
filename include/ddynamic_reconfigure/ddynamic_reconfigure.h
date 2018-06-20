@@ -33,17 +33,10 @@ namespace ddr {
     class DDynamicReconfigure {
     public:
         /**
-         * @brief creates the most basic instance of a 2d-conf object, with a default namesake.
+         * @brief creates the most basic instance of a 2d-conf object.
          * @param nh the node handler of the node this is placed at.
          */
         DDynamicReconfigure(ros::NodeHandle nh);
-
-        /**
-         * @brief creates a 2d-conf instance with the given name
-         * @param name the name to be used
-         * @param nh the node handler of the node this is placed at.
-         */
-        DDynamicReconfigure(ros::NodeHandle nh, string name);
 
         /**
          * @brief adds a variable to the list, allowing it to be generated.
@@ -104,11 +97,12 @@ namespace ddr {
 
         /**
          * @brief calls the internal callback for the low-level service, not exposed to us.
+         * @param obj the object we are using for its callback.
          * @param req ----(ROS)
          * @param rsp ----(ROS)
          * @return -------(ROS)
          */
-        bool internalCallback(Reconfigure::Request &req, Reconfigure::Response &rsp);
+        static bool internalCallback(DDynamicReconfigure *obj, Reconfigure::Request &req, Reconfigure::Response &rsp);
 
         /**
          * @brief makes the config descriptions for publishing
@@ -130,10 +124,8 @@ namespace ddr {
          */
         int getUpdates(const Reconfigure::Request &req, DDMap &config);
 
-        /// Private variables
-        string conf_name_;
         DDMap params_;
-        function<void(DDMap, int)>& callback_;
+        shared_ptr<function<void(DDMap, int)> > callback_;
         ros::NodeHandle nh_;
         ros::Publisher desc_pub_, update_pub_;
         #pragma clang diagnostic push // CLion suppressor

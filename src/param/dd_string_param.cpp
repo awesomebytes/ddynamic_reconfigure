@@ -30,9 +30,9 @@ namespace ddr {
         param.name = name_;
         param.value = def_;
         conf_desc.dflt.strs.push_back(param);
-        param.value = nullptr;
+        param.value = "";
         conf_desc.max.strs.push_back(param);
-        param.value = nullptr;
+        param.value = "";
         conf_desc.min.strs.push_back(param);
     }
 

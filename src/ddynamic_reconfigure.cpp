@@ -1,8 +1,11 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "modernize-loop-convert"
 //
 // Created by Noam Dori on 18/06/18.
 //
 #include <ddynamic_reconfigure/ddynamic_reconfigure.h>
 #include <ddynamic_reconfigure/dd_value.h>
+#include <boost/foreach.hpp>
 
 using namespace boost;
 namespace ddr {
@@ -11,10 +14,7 @@ namespace ddr {
     // this is a map from the DDParam name to the object. Acts like a set with a search function.
     typedef map<string,DDPtr> DDMap;
 
-    DDynamicReconfigure::DDynamicReconfigure(ros::NodeHandle nh) : DDynamicReconfigure(nh, ros::this_node::getName() + "_dyn_rec") {};
-
-    DDynamicReconfigure::DDynamicReconfigure(ros::NodeHandle nh, string name) : callback_() {
-        conf_name_ = name;
+    DDynamicReconfigure::DDynamicReconfigure(ros::NodeHandle nh) {
         nh_ = nh;
     };
 
@@ -26,8 +26,9 @@ namespace ddr {
         ConfigDescription conf_desc = makeDescription(); // registers defaults and max/min descriptions.
         Config conf = makeConfig(); // the actual config file in C++ form.
 
+        function<bool(Reconfigure::Request& req, Reconfigure::Response& rsp)> callback = bind(&internalCallback,this,_1,_2);
         // publishes Config and ConfigDescription.
-        set_service_ = nh_.advertiseService("set_parameters", &internalCallback); // this allows changes to the parameters
+        set_service_ = nh_.advertiseService("set_parameters", callback); // this allows changes to the parameters
 
         // this makes the parameter descriptions
         desc_pub_ = nh_.advertise<ConfigDescription>("parameter_descriptions", 1, true);
@@ -48,7 +49,7 @@ namespace ddr {
 
         // action 4 - prepping the Config msg for all params
         conf.groups.push_back(group_state);
-        for (const auto &param : params_) { param.second->prepConfig(conf);}
+        for(DDMap::const_iterator it = params_.begin(); it != params_.end(); it++) {it->second->prepConfig(conf);}
         return conf;
     }
 
@@ -58,10 +59,10 @@ namespace ddr {
 
         // action 1 - prepping the Group msg for all params
         group.name = "default";
-        for (const auto &param : params_) { param.second->prepGroup(group);}
+        for(DDMap::const_iterator it = params_.begin(); it != params_.end(); it++) {it->second->prepGroup(group);}
 
         // action 2 - prepping the ConfigDescription msg for all params
-        for (const auto &param : params_) { param.second->prepConfigDescription(conf_desc);}
+        for(DDMap::const_iterator it = params_.begin(); it != params_.end(); it++) {it->second->prepConfigDescription(conf_desc);}
         conf_desc.groups.push_back(group);
         return conf_desc;
     };
@@ -83,7 +84,7 @@ namespace ddr {
     }
 
     void DDynamicReconfigure::setCallback(function<void(DDMap,int)>& callback) {
-        callback_ = callback;
+        callback_ = make_shared<function<void(DDMap,int)> >(callback);
     };
 
     void DDynamicReconfigure::clearCallback() {
@@ -91,22 +92,22 @@ namespace ddr {
     };
 
     // Private function: internal callback used by the service to call our lovely callback.
-    bool DDynamicReconfigure::internalCallback(Reconfigure::Request& req, Reconfigure::Response& rsp) {
+    bool DDynamicReconfigure::internalCallback(DDynamicReconfigure *obj, Reconfigure::Request& req, Reconfigure::Response& rsp) {
         ROS_DEBUG_STREAM("Called config callback of ddynamic_reconfigure");
 
-        int level = getUpdates(req, params_);
+        int level = obj->getUpdates(req, obj->params_);
 
-        if (callback_) {
+        if (obj->callback_) {
             try {
-                callback_(params_,level);
-            } catch (exception &e) {
+                (*obj->callback_)(obj->params_,level);
+            } catch (std::exception &e) {
                 ROS_WARN("Reconfigure callback failed with exception %s: ", e.what());
             } catch (...) {
                 ROS_WARN("Reconfigure callback failed with unprintable exception.");
             }
         }
 
-        update_pub_.publish(makeConfig()); // updates the config
+        obj->update_pub_.publish(obj->makeConfig()); // updates the config
 
         return true;
     }
@@ -114,7 +115,7 @@ namespace ddr {
     int DDynamicReconfigure::getUpdates(const Reconfigure::Request &req, DDMap &config) {
         int level = 0;
         // the ugly part of the code, since ROS does not provide a nice generic message. Oh well...
-        for (auto &i : req.config.ints) {
+        BOOST_FOREACH(const IntParameter i,req.config.ints) {
             int new_level = reassign(config, i.name, i.value);
             if(new_level == -1) {
                 ROS_ERROR_STREAM("Variable [" << i.name << "] is not registered");
@@ -122,7 +123,7 @@ namespace ddr {
                 level |= new_level;
             }
         }
-        for (auto &i : req.config.doubles) {
+        BOOST_FOREACH(const DoubleParameter i,req.config.doubles) {
             int new_level = reassign(config, i.name, i.value);
             if(new_level == -1) {
                 ROS_ERROR_STREAM("Variable [" << i.name << "] is not registered");
@@ -130,7 +131,7 @@ namespace ddr {
                 level |= new_level;
             }
         }
-        for (auto &i : req.config.bools) {
+        BOOST_FOREACH(const BoolParameter i,req.config.bools) {
             int new_level = reassign(config, i.name, i.value);
             if(new_level == -1) {
                 ROS_ERROR_STREAM("Variable [" << i.name << "] is not registered");
@@ -138,7 +139,7 @@ namespace ddr {
                 level |= new_level;
             }
         }
-        for (auto &i : req.config.strs) {
+        BOOST_FOREACH(const StrParameter i,req.config.strs) {
             int new_level = reassign(config, i.name, i.value);
             if(new_level == -1) {
                 ROS_ERROR_STREAM("Variable [" << i.name << "] is not registered");
@@ -155,7 +156,6 @@ namespace ddr {
         if(map.find(name) != map.end() && map[name]->sameType(val)) {
             DDPtr old = map[name]; // this is the old map which might be updated.
             if(old->sameValue(val)) { return 0;} else {
-                DDParam param; param.sameValue(val);
                 old->setValue(val);
                 return old->getLevel();
             }
@@ -164,3 +164,4 @@ namespace ddr {
         }
     }
 }
+#pragma clang diagnostic pop
