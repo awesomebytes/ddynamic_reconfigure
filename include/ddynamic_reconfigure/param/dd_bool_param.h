@@ -9,7 +9,7 @@
 #include "ddynamic_reconfigure/ddynamic_reconfigure.h"
 
 namespace ddr {
-    class DDBoolParam : DDParam {
+    class DDBool : public DDParam {
     public:
         string getName();
 
@@ -27,7 +27,9 @@ namespace ddr {
 
         void setValue(Value val);
 
-        DDBoolParam(const string &name, unsigned int level, bool def) {
+        Value getValue();
+
+        DDBool(const string &name, unsigned int level, bool def) {
             name_ = name;
             level_ = level;
             def_ = def;

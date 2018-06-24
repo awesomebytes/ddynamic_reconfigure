@@ -5,11 +5,11 @@
 #include <ddynamic_reconfigure/param/dd_string_param.h>
 
 namespace ddr {
-    string DDStringParam::getName() {
+    string DDString::getName() {
         return name_;
     }
 
-    void DDStringParam::prepGroup(Group &group) {
+    void DDString::prepGroup(Group &group) {
         ParamDescription desc;
         desc.name  = name_;
         //desc.desc = registered_string_[i].first;
@@ -18,14 +18,14 @@ namespace ddr {
         group.parameters.push_back(desc);
     }
 
-    void DDStringParam::prepConfig(Config &conf) {
+    void DDString::prepConfig(Config &conf) {
         StrParameter param;
         param.name = name_;
         param.value = val_;
         conf.strs.push_back(param);
     }
 
-    void DDStringParam::prepConfigDescription(ConfigDescription &conf_desc) {
+    void DDString::prepConfigDescription(ConfigDescription &conf_desc) {
         StrParameter param;
         param.name = name_;
         param.value = def_;
@@ -36,19 +36,23 @@ namespace ddr {
         conf_desc.min.strs.push_back(param);
     }
 
-    int DDStringParam::getLevel() {
+    int DDString::getLevel() {
         return level_;
     }
 
-    bool DDStringParam::sameType(Value val) {
+    bool DDString::sameType(Value val) {
         return val.getType() == "string";
     }
 
-    bool DDStringParam::sameValue(Value val) {
-        return val.getStrVal() == val_;
+    bool DDString::sameValue(Value val) {
+        return val.toString() == val_;
     }
 
-    void DDStringParam::setValue(Value val) {
-        val_ = val.getStrVal();
+    void DDString::setValue(Value val) {
+        val_ = val.toString();
+    }
+
+    Value DDString::getValue() {
+        return Value(val_);
     }
 }

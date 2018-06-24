@@ -9,7 +9,7 @@
 #include "ddynamic_reconfigure/ddynamic_reconfigure.h"
 
 namespace ddr {
-    class DDIntParam : DDParam {
+    class DDInt : public DDParam {
     public:
         string getName();
 
@@ -27,7 +27,9 @@ namespace ddr {
 
         void setValue(Value val);
 
-        inline DDIntParam(const string &name, unsigned int level, int def, int max = INT32_MAX, int min = INT32_MIN) {
+        Value getValue();
+
+        inline DDInt(const string &name, unsigned int level, int def, int max = INT32_MAX, int min = INT32_MIN) {
             name_ = name;
             level_ = level;
             def_ = def;

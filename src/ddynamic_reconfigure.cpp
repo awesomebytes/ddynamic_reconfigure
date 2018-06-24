@@ -9,17 +9,17 @@
 
 using namespace boost;
 namespace ddr {
-    // this is the pointer to any type of Dynamic Dynamic parameter.
-    typedef shared_ptr<DDParam> DDPtr;
-    // this is a map from the DDParam name to the object. Acts like a set with a search function.
-    typedef map<string,DDPtr> DDMap;
 
     DDynamicReconfigure::DDynamicReconfigure(ros::NodeHandle nh) {
         nh_ = nh;
     };
 
-    void DDynamicReconfigure::addVariable(DDPtr param) {
+    void DDynamicReconfigure::add(DDPtr param) {
         params_[param->getName()] = param;
+    };
+
+    void DDynamicReconfigure::add(DDParam *param) {
+        add(shared_ptr<DDParam>(param));
     };
 
     void DDynamicReconfigure::start() {
@@ -67,28 +67,30 @@ namespace ddr {
         return conf_desc;
     };
 
-    void DDynamicReconfigure::start(function<void(DDMap,int)>& callback) {
+    void DDynamicReconfigure::start(DDFunc callback) {
         start();
         setCallback(callback);
     };
 
-    void DDynamicReconfigure::start(void(*callback)(DDMap,int)) {
-        function<void(DDMap,int)> f(callback);
+    void DDynamicReconfigure::start(void(*callback)(const DDMap&,int)) {
+        DDFunc f(callback);
         start(f);
     };
 
-    template <class T> void DDynamicReconfigure::start(void(T::*callback)(DDMap,int), T* obj) {
+    // this is also available in the header file (linking template functions is problematic.
+    // template <class T> void DDynamicReconfigure::start(void(T::*callback)(const DDMap&,int), T *obj) {
+    //        DDFunc f = bind(callback,obj,_1);
+    //        start();
+    //    }
 
-        function<void(DDMap,int)> f = bind(callback,obj,_1);
-        start();
-    }
-
-    void DDynamicReconfigure::setCallback(function<void(DDMap,int)>& callback) {
-        callback_ = make_shared<function<void(DDMap,int)> >(callback);
+    void DDynamicReconfigure::setCallback(DDFunc callback) {
+        callback_ = make_shared<function<void(const DDMap&,int)> >(callback);
     };
 
+    void defaultCallback(const DDMap&,int) {};
+
     void DDynamicReconfigure::clearCallback() {
-        callback_;
+        callback_ = make_shared<DDFunc>(&defaultCallback);
     };
 
     // Private function: internal callback used by the service to call our lovely callback.
@@ -132,7 +134,7 @@ namespace ddr {
             }
         }
         BOOST_FOREACH(const BoolParameter i,req.config.bools) {
-            int new_level = reassign(config, i.name, i.value);
+            int new_level = reassign(config, i.name, (bool)i.value);
             if(new_level == -1) {
                 ROS_ERROR_STREAM("Variable [" << i.name << "] is not registered");
             } else {

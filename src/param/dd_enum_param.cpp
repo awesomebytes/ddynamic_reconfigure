@@ -9,31 +9,42 @@
 
 namespace ddr {
 
-    bool DDEnumParam::sameType(Value val) {
+    bool DDEnum::sameType(Value val) {
         return val.getType() == "int" || val.getType() == "string";
     }
 
-    bool DDEnumParam::sameValue(Value val) {
+    bool DDEnum::sameValue(Value val) {
         if(val.getType() == "string") {
-            return dict_.find(val.getStrVal()) != dict_.end();
+            return dict_.find(val.toString())->second == val_;
         } else {
-            return val.getIntVal() == val_;
+            return val.toInt() == val_;
         }
     }
 
-    void DDEnumParam::setValue(Value val) {
-        if(val.getType() == "string" && dict_.find(val.getStrVal()) != dict_.end()) {
-            val_ = dict_.find(val.getStrVal())->second;
+    void DDEnum::setValue(Value val) {
+        if(val.getType() == "string" && dict_.find(val.toString()) != dict_.end()) {
+            val_ = dict_.find(val.toString())->second;
         } else {
-            val_ = val.getIntVal();
+            val_ = val.toInt();
         }
     }
 
-    DDEnumParam::DDEnumParam(const string &name, unsigned int level, int def, const map<string, int> &dictionary) :
-            DDIntParam(name,level,def),
+    DDEnum::DDEnum(const string &name, unsigned int level, int def, const map<string, int> &dictionary) :
+            DDInt(name,level,def),
             dict_(dictionary) {
         max_ = def;
         min_ = def;
+        for(map<string,int>::const_iterator it = dictionary.begin(); it != dictionary.end(); it++) {
+            if(it->second > max_) {max_ = it->second;}
+            if(it->second < min_) {min_ = it->second;}
+        };
+    }
+
+    DDEnum::DDEnum(const string &name, unsigned int level, const string &def, const map<string, int> &dictionary) :
+            DDInt(name,level,dictionary.find(def)->second),
+            dict_(dictionary) {
+        max_ = def_;
+        min_ = def_;
         for(map<string,int>::const_iterator it = dictionary.begin(); it != dictionary.end(); it++) {
             if(it->second > max_) {max_ = it->second;}
             if(it->second < min_) {min_ = it->second;}

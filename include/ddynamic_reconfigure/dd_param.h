@@ -30,28 +30,16 @@ namespace ddr {
         virtual string getName() = 0;
 
         /**
-         * @brief updates a group message according to this param's info
-         * @param group the group to update
-         */
-        virtual void prepGroup(Group &group) = 0;
-
-        /**
-         * @brief updates a config message according to this param's info
-         * @param conf the group to update
-         */
-        virtual void prepConfig(Config &conf) = 0;
-
-        /**
-         * @brief updates a config description message according to this param's info
-         * @param conf_desc the config description to update
-         */
-        virtual void prepConfigDescription(ConfigDescription &conf_desc) = 0;
-
-        /**
          * @brief fetches the level of the parameter
          * @return the level of the param.
          */
         virtual int getLevel() = 0;
+
+        /**
+         * @brief gets the value of this parameter.
+         * @return the value stored in this param.
+         */
+        virtual Value getValue()  = 0;
         
         /**
          * @brief checks if this parameter is the same type as the value.
@@ -72,6 +60,27 @@ namespace ddr {
          * @param val the value to use
          */
         virtual void setValue(Value val) = 0;
+
+        /**
+         * @brief updates a group message according to this param's info.
+         * @param group the group to update.
+         * @note this is an internal method. It is recommended not to use it.
+         */
+        virtual void prepGroup(Group &group) = 0;
+
+        /**
+         * @brief updates a config message according to this param's info.
+         * @param conf the group to update.
+         * @note this is an internal method. It is recommended not to use it.
+         */
+        virtual void prepConfig(Config &conf) = 0;
+
+        /**
+         * @brief updates a config description message according to this param's info.
+         * @param conf_desc the config description to update.
+         * @note this is an internal method. It is recommended not to use it.
+         */
+        virtual void prepConfigDescription(ConfigDescription &conf_desc) = 0;
     };
 }
 #endif //DDYNAMIC_RECONFIGURE_DD_PARAM_H

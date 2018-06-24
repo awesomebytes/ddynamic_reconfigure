@@ -9,7 +9,7 @@
 #include "ddynamic_reconfigure/ddynamic_reconfigure.h"
 
 namespace ddr {
-    class DDStringParam : DDParam {
+    class DDString : public DDParam {
     public:
         string getName();
 
@@ -27,7 +27,9 @@ namespace ddr {
 
         void setValue(Value val);
 
-        DDStringParam(const string &name, unsigned int level, string def) {
+        Value getValue();
+
+        DDString(const string &name, unsigned int level, string def) {
             name_ = name;
             level_ = level;
             def_ = def;

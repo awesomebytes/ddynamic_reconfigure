@@ -5,7 +5,6 @@
 #include <ros/ros.h>
 #include <dynamic_reconfigure/server.h>
 
-
 #include <string>
 #include <vector>
 #include <map>
@@ -26,6 +25,8 @@ namespace ddr {
     typedef shared_ptr<DDParam> DDPtr;
     // this is a map from the DDParam name to the object. Acts like a set with a search function.
     typedef map<string,DDPtr> DDMap;
+    // the function you will use a lot
+    typedef function<void(const DDMap&,int)> DDFunc;
 
     /**
      * @brief This class is the actual top-level API that manages the dynamic configuration of the files of d-reconfig.
@@ -39,16 +40,22 @@ namespace ddr {
         DDynamicReconfigure(ros::NodeHandle nh);
 
         /**
-         * @brief adds a variable to the list, allowing it to be generated.
+         * @brief adds a parameter to the list, allowing it to be generated.
          * @param param the pointer to the 2d-param to add to the list.
          */
-        void addVariable(DDPtr param);
+        void add(DDPtr param);
+
+        /**
+         * @brief adds a parameter to the list, allowing it to be generated.
+         * @param param the pointer to the 2d-param to add to the list.
+         */
+        void add(DDParam *param);
 
         /**
          * @brief sets the callback to this.
          * @param callback a boost function with the method to use when values are updated.
          */
-        void setCallback(function<void(DDMap, int)>& callback);
+        void setCallback(DDFunc callback);
 
         /**
          * @brief sets the callback to be empty.
@@ -64,13 +71,13 @@ namespace ddr {
          * @brief starts the server, using the given callback in function form.
          * @param callback a boost function with the method to use when values are updated.
          */
-        void start(function<void(DDMap, int)>& callback);
+        void start(DDFunc callback);
 
         /**
          * @brief starts the server, using the given callback in method form.
          * @param callback a void pointer accepting a callback type with the method to use when values are updated.
          */
-        void start(void(*callback)(DDMap, int));
+        void start(void(*callback)(const DDMap&, int));
 
         /**
          * @brief starts the server, using the given callback in class-wise static method form.
@@ -78,8 +85,10 @@ namespace ddr {
          * @param obj the object used for reference in the class void
          * @tparam T the class of the object.
          */
-        template<class T>
-        void start(void(T::*callback)(DDMap, int), T *obj);
+        template<class T> void start(void(T::*callback)(const DDMap&, int), T *obj) {
+            DDFunc f = bind(callback,obj,_1,_2);
+            start();
+        }
 
         /**
          * @brief reassigns a value to the internal map assuming it is registered.
@@ -125,7 +134,7 @@ namespace ddr {
         int getUpdates(const Reconfigure::Request &req, DDMap &config);
 
         DDMap params_;
-        shared_ptr<function<void(DDMap, int)> > callback_;
+        shared_ptr<function<void(const DDMap&, int)> > callback_;
         ros::NodeHandle nh_;
         ros::Publisher desc_pub_, update_pub_;
         #pragma clang diagnostic push // CLion suppressor

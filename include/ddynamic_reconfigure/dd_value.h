@@ -11,60 +11,60 @@ namespace ddr {
     class Value {
     private:
         int int_val_;
-        string str_val_, val_type_;
-        double do_val_;
+        string str_val_, type_;
+        double double_val_;
         bool bool_val_;
     public:
-        inline explicit Value(int val) : do_val_(0.0), bool_val_(false) {
-            val_type_ = "int";
+        inline explicit Value(int val) : double_val_(0.0), bool_val_(false) {
+            type_ = "int";
             int_val_ = val;
         }
 
         inline explicit Value(double val) : int_val_(0), bool_val_(false) {
-            val_type_ = "double";
-            do_val_ = val;
+            type_ = "double";
+            double_val_ = val;
         }
 
-        inline explicit Value(const string &val) : int_val_(0), do_val_(0.0), bool_val_(false) {
-            val_type_ = "string";
+        inline explicit Value(const string &val) : int_val_(0), double_val_(0.0), bool_val_(false) {
+            type_ = "string";
             str_val_ = val;
         }
 
-        inline explicit Value(bool val) : int_val_(0), do_val_(0.0) {
-            val_type_ = "bool";
+        inline explicit Value(bool val) : int_val_(0), double_val_(0.0) {
+            type_ = "bool";
             bool_val_ = val;
         }
 
         inline string getType() {
-            return val_type_;
+            return type_;
         }
 
-        inline int getIntVal() {
-            if(val_type_ == "string") { return (int)str_val_.size();}
-            else if(val_type_ == "bool") {return bool_val_;}
-            else if(val_type_ == "double") {return do_val_ ? 1 : 0;}
+        inline int toInt() {
+            if(type_ == "string") { return (int)str_val_.size();}
+            else if(type_ == "bool") {return bool_val_;}
+            else if(type_ == "double") {return double_val_ ? 1 : 0;}
             else {return int_val_;}
         }
 
-        inline string getStrVal() {
+        inline string toString() {
             std::stringstream ss;
-            if(val_type_ == "string") { return str_val_;}
-            else if(val_type_ == "bool") {return bool_val_ ? "true" : "false";}
-            else if(val_type_ == "double") {ss << do_val_; return ss.str();}
+            if(type_ == "string") { return str_val_;}
+            else if(type_ == "bool") {return bool_val_ ? "true" : "false";}
+            else if(type_ == "double") {ss << double_val_; return ss.str();}
             else {ss << int_val_; return ss.str();}
         }
 
-        inline double getDoubleVal() {
-            if(val_type_ == "string") { return str_val_.size();}
-            else if(val_type_ == "bool") {return bool_val_ ? 1.0 : 0.0;}
-            else if(val_type_ == "double") {return do_val_;}
+        inline double toDouble() {
+            if(type_ == "string") { return str_val_.size();}
+            else if(type_ == "bool") {return bool_val_ ? 1.0 : 0.0;}
+            else if(type_ == "double") {return double_val_;}
             else {return int_val_;}
         }
 
-        inline bool getBoolVal() {
-            if(val_type_ == "string") { return str_val_.empty();}
-            else if(val_type_ == "bool") {return bool_val_;}
-            else if(val_type_ == "double") {return do_val_ != 0.0;}
+        inline bool toBool() {
+            if(type_ == "string") { return str_val_.empty();}
+            else if(type_ == "bool") {return bool_val_;}
+            else if(type_ == "double") {return double_val_ != 0.0;}
             else {return int_val_ != 0;}
         }
     };

@@ -5,11 +5,11 @@
 #include <ddynamic_reconfigure/param/dd_bool_param.h>
 
 namespace ddr {
-    string DDBoolParam::getName() {
+    string DDBool::getName() {
         return name_;
     }
 
-    void DDBoolParam::prepGroup(Group &group) {
+    void DDBool::prepGroup(Group &group) {
         ParamDescription desc;
         desc.name  = name_;
         //desc.desc = registered_bool_[i].first;
@@ -18,14 +18,14 @@ namespace ddr {
         group.parameters.push_back(desc);
     }
 
-    void DDBoolParam::prepConfig(Config &conf) {
+    void DDBool::prepConfig(Config &conf) {
         BoolParameter param;
         param.name = name_;
         param.value = (unsigned char)val_;
         conf.bools.push_back(param);
     }
 
-    void DDBoolParam::prepConfigDescription(ConfigDescription &conf_desc) {
+    void DDBool::prepConfigDescription(ConfigDescription &conf_desc) {
         BoolParameter param;
         param.name = name_;
         param.value = (unsigned char)def_;
@@ -36,19 +36,23 @@ namespace ddr {
         conf_desc.min.bools.push_back(param);
     }
 
-    int DDBoolParam::getLevel() {
+    int DDBool::getLevel() {
         return level_;
     }
 
-    bool DDBoolParam::sameType(Value val) {
+    bool DDBool::sameType(Value val) {
         return val.getType() == "bool";
     }
 
-    bool DDBoolParam::sameValue(Value val) {
-        return val.getBoolVal() == val_;
+    bool DDBool::sameValue(Value val) {
+        return val.toBool() == val_;
     }
 
-    void DDBoolParam::setValue(Value val) {
-        val_ = val.getBoolVal();
+    void DDBool::setValue(Value val) {
+        val_ = val.toBool();
+    }
+
+    Value DDBool::getValue() {
+        return Value(val_);
     }
 }

@@ -5,11 +5,11 @@
 #include <ddynamic_reconfigure/param/dd_double_param.h>
 
 namespace ddr {
-    string DDDoubleParam::getName() {
+    string DDDouble::getName() {
         return name_;
     }
 
-    void DDDoubleParam::prepGroup(Group &group) {
+    void DDDouble::prepGroup(Group &group) {
         ParamDescription desc;
         desc.name  = name_;
         //desc.desc = registered_double_[i].first;
@@ -18,14 +18,14 @@ namespace ddr {
         group.parameters.push_back(desc);
     }
 
-    void DDDoubleParam::prepConfig(Config &conf) {
+    void DDDouble::prepConfig(Config &conf) {
         DoubleParameter param;
         param.name = name_;
         param.value = val_;
         conf.doubles.push_back(param);
     }
 
-    void DDDoubleParam::prepConfigDescription(ConfigDescription &conf_desc) {
+    void DDDouble::prepConfigDescription(ConfigDescription &conf_desc) {
         DoubleParameter param;
         param.name = name_;
         param.value = def_;
@@ -36,19 +36,23 @@ namespace ddr {
         conf_desc.min.doubles.push_back(param);
     }
 
-    int DDDoubleParam::getLevel() {
+    int DDDouble::getLevel() {
         return level_;
     }
 
-    bool DDDoubleParam::sameType(Value val) {
+    bool DDDouble::sameType(Value val) {
         return val.getType() == "double";
     }
 
-    bool DDDoubleParam::sameValue(Value val) {
-        return val.getDoubleVal() == val_;
+    bool DDDouble::sameValue(Value val) {
+        return val.toDouble() == val_;
     }
 
-    void DDDoubleParam::setValue(Value val) {
-        val_ = val.getDoubleVal();
+    void DDDouble::setValue(Value val) {
+        val_ = val.toDouble();
+    }
+
+    Value DDDouble::getValue() {
+        return Value(val_);
     }
 }

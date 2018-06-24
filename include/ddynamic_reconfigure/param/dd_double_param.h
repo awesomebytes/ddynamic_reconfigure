@@ -9,7 +9,7 @@
 #include "ddynamic_reconfigure/ddynamic_reconfigure.h"
 
 namespace ddr {
-    class DDDoubleParam : DDParam {
+    class DDDouble : public DDParam {
     public:
         string getName();
 
@@ -27,7 +27,9 @@ namespace ddr {
 
         void setValue(Value val);
 
-        DDDoubleParam(const string &name, unsigned int level, double def, double max = DBL_MAX, double min = -DBL_MAX) {
+        Value getValue();
+
+        DDDouble(const string &name, unsigned int level, double def, double max = DBL_MAX, double min = -DBL_MAX) {
             name_ = name;
             level_ = level;
             def_ = def;

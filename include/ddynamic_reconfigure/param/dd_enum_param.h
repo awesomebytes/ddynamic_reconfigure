@@ -11,7 +11,7 @@
 #include <boost/foreach.hpp>
 
 namespace ddr {
-    class DDEnumParam : DDIntParam {
+    class DDEnum : public DDInt {
     public:
 
         bool sameType(Value val);
@@ -20,7 +20,9 @@ namespace ddr {
 
         void setValue(Value val);
 
-        DDEnumParam(const string &name, unsigned int level, int def, const map<string,int> &dictionary);
+        DDEnum(const string &name, unsigned int level, int def, const map<string,int> &dictionary);
+
+        DDEnum(const string &name, unsigned int level, const string& def, const map<string,int> &dictionary);
 
     protected:
         const map<string,int> &dict_;
