@@ -27,15 +27,18 @@ namespace ddr {
 
         dynamic_reconfigure::Reconfigure srv;
 
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
-        EXPECT_TRUE(flag);
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_TRUE(flag);
     }
 
     void intCallback(const DDMap& map, int, int *flag) {
-        EXPECT_EQ("int",map.find("int_param")->second->getValue().getType());
+        ASSERT_EQ("int",map.find("int_param")->second->getValue().getType());
         *flag = map.find("int_param")->second->getValue().toInt();
     }
 
+    /**
+     * @brief tests that int parameters are registered properly
+     */
     TEST(DDynamicReconfigureTest, intTest) { // NOLINT(cert-err58-cpp,modernize-use-equals-delete)
         ros::NodeHandle nh("~");
         int flag = 0;
@@ -54,25 +57,28 @@ namespace ddr {
 
         int_param.value = (int)random();
         srv.request.config.ints.push_back(int_param);
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
-        EXPECT_EQ(int_param.value, flag);
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_EQ(int_param.value, flag);
 
         int_param.value = INT32_MAX;
         srv.request.config.ints.push_back(int_param);
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
-        EXPECT_EQ(int_param.value, flag);
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_EQ(int_param.value, flag);
 
         int_param.value = INT32_MIN;
         srv.request.config.ints.push_back(int_param);
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
-        EXPECT_EQ(int_param.value, flag);
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_EQ(int_param.value, flag);
     }
 
     void doubleCallback(const DDMap& map, int, double *flag) {
-        EXPECT_EQ("double",map.find("double_param")->second->getValue().getType());
+        ASSERT_EQ("double",map.find("double_param")->second->getValue().getType());
         *flag = map.find("double_param")->second->getValue().toDouble();
     }
 
+    /**
+     * @brief tests that double parameters are registered properly
+     */
     TEST(DDynamicReconfigureTest, doubleTest) { // NOLINT(cert-err58-cpp,modernize-use-equals-delete)
         ros::NodeHandle nh("~");
         double flag = 0;
@@ -91,35 +97,38 @@ namespace ddr {
 
         double_param.value = (double)random();
         srv.request.config.doubles.push_back(double_param);
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
-        EXPECT_EQ(double_param.value, flag);
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_EQ(double_param.value, flag);
 
         double_param.value = DBL_MAX;
         srv.request.config.doubles.push_back(double_param);
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
-        EXPECT_EQ(double_param.value, flag);
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_EQ(double_param.value, flag);
 
         double_param.value = DBL_MIN;
         srv.request.config.doubles.push_back(double_param);
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
-        EXPECT_EQ(double_param.value, flag);
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_EQ(double_param.value, flag);
 
         double_param.value = -DBL_MAX;
         srv.request.config.doubles.push_back(double_param);
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
-        EXPECT_EQ(double_param.value, flag);
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_EQ(double_param.value, flag);
 
         double_param.value = -DBL_MIN;
         srv.request.config.doubles.push_back(double_param);
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
-        EXPECT_EQ(double_param.value, flag);
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_EQ(double_param.value, flag);
     }
 
     void boolCallback(const DDMap& map, int, bool *flag) {
-        EXPECT_EQ("bool",map.find("bool_param")->second->getValue().getType());
+        ASSERT_EQ("bool",map.find("bool_param")->second->getValue().getType());
         *flag = map.find("bool_param")->second->getValue().toBool();
     }
 
+    /**
+     * @brief tests that boolean parameters are registered properly
+     */
     TEST(DDynamicReconfigureTest, boolTest) { // NOLINT(cert-err58-cpp,modernize-use-equals-delete)
         ros::NodeHandle nh("~");
         bool flag = true;
@@ -138,22 +147,25 @@ namespace ddr {
 
         bool_param.value = (unsigned char)false;
         srv.request.config.bools.push_back(bool_param);
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
-        EXPECT_EQ((bool)bool_param.value, flag);
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_EQ((bool)bool_param.value, flag);
 
         flag = false;
 
         bool_param.value = (unsigned char)true;
         srv.request.config.bools.push_back(bool_param);
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
-        EXPECT_EQ((bool)bool_param.value, flag);
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_EQ((bool)bool_param.value, flag);
     }
 
     void strCallback(const DDMap& map, int, string *flag) {
-        EXPECT_EQ("string",map.find("string_param")->second->getValue().getType());
+        ASSERT_EQ("string",map.find("string_param")->second->getValue().getType());
         *flag = map.find("string_param")->second->getValue().toString();
     }
 
+    /**
+     * @brief tests that string parameters are registered properly
+     */
     TEST(DDynamicReconfigureTest, stringTest) { // NOLINT(cert-err58-cpp,modernize-use-equals-delete)
         ros::NodeHandle nh("~");
         string flag = "YOU SHOULDN'T RECEIVE THIS";
@@ -172,25 +184,28 @@ namespace ddr {
 
         string_param.value = string("\000"); // NOLINT(bugprone-string-literal-with-embedded-nul)
         srv.request.config.strs.push_back(string_param);
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
-        EXPECT_EQ(string_param.value, flag);
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_EQ(string_param.value, flag);
 
         string_param.value = "";
         srv.request.config.strs.push_back(string_param);
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
-        EXPECT_EQ(string_param.value, flag);
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_EQ(string_param.value, flag);
 
         string_param.value = "Hello World";
         srv.request.config.strs.push_back(string_param);
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
-        EXPECT_EQ(string_param.value, flag);
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_EQ(string_param.value, flag);
     }
 
     void enumCallback(const DDMap& map, int, int *flag) {
-        EXPECT_EQ("int",map.find("enum_param")->second->getValue().getType());
+        ASSERT_EQ("int",map.find("enum_param")->second->getValue().getType());
         *flag = map.find("enum_param")->second->getValue().toInt();
     }
 
+    /**
+     * @brief tests that int-enum parameters are registered properly
+     */
     TEST(DDynamicReconfigureTest, enumTest) { // NOLINT(cert-err58-cpp,modernize-use-equals-delete)
         ros::NodeHandle nh("~");
         int flag = 0;
@@ -216,18 +231,18 @@ namespace ddr {
 
         int_enum.value = 1;
         srv.request.config.ints.push_back(int_enum);
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
-        EXPECT_EQ(int_enum.value, flag);
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_EQ(int_enum.value, flag);
 
         int_enum.value = 10;
         srv.request.config.ints.push_back(int_enum);
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
-        EXPECT_EQ(int_enum.value, flag);
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_EQ(int_enum.value, flag);
 
         int_enum.value = -1;
         srv.request.config.ints.push_back(int_enum);
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
-        EXPECT_EQ(int_enum.value, flag);
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_EQ(int_enum.value, flag);
 
         srv.request.config.ints.clear();
         dynamic_reconfigure::StrParameter str_enum;
@@ -235,29 +250,32 @@ namespace ddr {
 
         str_enum.value = "ONE";
         srv.request.config.strs.push_back(str_enum);
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
-        EXPECT_EQ(dict[str_enum.value], flag);
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_EQ(dict[str_enum.value], flag);
 
         str_enum.value = "TEN";
         srv.request.config.strs.push_back(str_enum);
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
-        EXPECT_EQ(dict[str_enum.value], flag);
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_EQ(dict[str_enum.value], flag);
 
         str_enum.value = "NEG-ONE";
         srv.request.config.strs.push_back(str_enum);
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
-        EXPECT_EQ(dict[str_enum.value], flag);
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_EQ(dict[str_enum.value], flag);
     }
 
     void complexCallback(const DDMap& map, int level) {
-        EXPECT_EQ(0, level);
-        EXPECT_EQ(1, map.at("int_param")->getValue().toInt());
-        EXPECT_EQ(0.6, map.at("double_param")->getValue().toDouble());
-        EXPECT_EQ("Goodbye Home", map.at("str_param")->getValue().toString());
-        EXPECT_EQ(false, map.at("bool_param")->getValue().toBool());
-        EXPECT_EQ(3, map.at("enum_param")->getValue().toInt());
+        ASSERT_EQ(0, level);
+        ASSERT_EQ(1, map.at("int_param")->getValue().toInt());
+        ASSERT_EQ(0.6, map.at("double_param")->getValue().toDouble());
+        ASSERT_EQ("Goodbye Home", map.at("str_param")->getValue().toString());
+        ASSERT_EQ(false, map.at("bool_param")->getValue().toBool());
+        ASSERT_EQ(3, map.at("enum_param")->getValue().toInt());
     }
 
+    /**
+     * @brief tests that ddynamic can handle complex callbacks and param lists.
+     */
     TEST(DDynamicReconfigureTest, callbackTest) { // NOLINT(cert-err58-cpp,modernize-use-equals-delete)
         ros::NodeHandle nh("~");
         DDynamicReconfigure dd(nh); // gets our main class running
@@ -304,18 +322,18 @@ namespace ddr {
         enum_param.value = "ExtraLarge";
         srv.request.config.strs.push_back(enum_param);
 
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
 
         bool flag = false;
         DDFunc callback = bind(&basicCallback,_1,_2,&flag);
         dd.setCallback(callback);
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
-        EXPECT_TRUE(flag);
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_TRUE(flag);
 
         flag = false;
         dd.clearCallback();
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
-        EXPECT_FALSE(flag);
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_FALSE(flag);
     }
 
     class InternalClass {
@@ -323,7 +341,10 @@ namespace ddr {
         inline void internalCallback(const DDMap& map, int level) {}
     };
 
-    TEST(DDynamicReconfigureTest, staticCallbackTest) { // NOLINT(cert-err58-cpp,modernize-use-equals-delete)
+    /**
+     * @brief tests that ddynamic can take member methods as callbacks
+     */
+    TEST(DDynamicReconfigureTest, memberCallbackTest) { // NOLINT(cert-err58-cpp,modernize-use-equals-delete)
         ros::NodeHandle nh("~");
         DDynamicReconfigure dd(nh); // gets our main class running
 
@@ -334,13 +355,16 @@ namespace ddr {
 
         dynamic_reconfigure::Reconfigure srv;
 
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
     }
 
     void levelCallback(const DDMap&, int level, int *flag) {
         *flag = level;
     }
 
+    /**
+     * @brief tests that ddynamic properly handles param change levels
+     */
     TEST(DDynamicReconfigureTest, levelTest) { // NOLINT(cert-err58-cpp,modernize-use-equals-delete)
         ros::NodeHandle nh("~");
         int flag = 0;
@@ -367,8 +391,8 @@ namespace ddr {
             srv.request.config.ints.push_back(int_param);
         }
 
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
-        EXPECT_EQ(or_sum, flag);
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_EQ(or_sum, flag);
 
         dd.add(new DDInt("unchanged_param", 1, 0)); //u-int max means everything is 1, so the result must also be that.
         dynamic_reconfigure::IntParameter unchanged_param;
@@ -376,11 +400,11 @@ namespace ddr {
         unchanged_param.value = 1;
         srv.request.config.ints.push_back(unchanged_param);
 
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
-        EXPECT_EQ(1, flag);
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_EQ(1, flag);
 
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
-        EXPECT_EQ(0, flag);
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_EQ(0, flag);
     }
 
     void badCallback(const DDMap&, int) {
@@ -388,6 +412,9 @@ namespace ddr {
         throw e; // NOLINT(cert-err09-cpp,cert-err61-cpp,misc-throw-by-value-catch-by-reference)
     }
 
+    /**
+     * @brief tests that ddynamic can properly handle exceptions
+     */
     TEST(DDynamicReconfigureTest, badCallbackTest) { // NOLINT(cert-err58-cpp,modernize-use-equals-delete)
         ros::NodeHandle nh("~");
         DDynamicReconfigure dd(nh); // gets our main class running
@@ -398,18 +425,21 @@ namespace ddr {
 
         dynamic_reconfigure::Reconfigure srv;
 
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
         // this is the best way to see exceptions doesn't make the whole thing tumble
     }
 
     void missingCallback(const DDMap& map, int) {
-        EXPECT_EQ(map.end(),map.find("int_param"));
-        EXPECT_EQ(map.end(),map.find("double_param"));
-        EXPECT_EQ(map.end(),map.find("bool_param"));
-        EXPECT_EQ(map.end(),map.find("str_param"));
-        EXPECT_EQ(map.end(),map.find("enum_param"));
+        ASSERT_EQ(map.end(),map.find("int_param"));
+        ASSERT_EQ(map.end(),map.find("double_param"));
+        ASSERT_EQ(map.end(),map.find("bool_param"));
+        ASSERT_EQ(map.end(),map.find("str_param"));
+        ASSERT_EQ(map.end(),map.find("enum_param"));
     }
 
+    /**
+     * @brief tests that ddynamic can properly handle missing/unregistered parameters
+     */
     TEST(DDynamicReconfigureTest, unknownParamTest) { // NOLINT(cert-err58-cpp,modernize-use-equals-delete)
         ros::NodeHandle nh("~");
         DDynamicReconfigure dd(nh); // gets our main class running
@@ -445,7 +475,7 @@ namespace ddr {
         enum_param.value = "ExtraLarge";
         srv.request.config.strs.push_back(enum_param);
 
-        EXPECT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+        ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
     }
 }
 

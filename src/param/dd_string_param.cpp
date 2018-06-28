@@ -12,7 +12,6 @@ namespace ddr {
     void DDString::prepGroup(Group &group) {
         ParamDescription desc;
         desc.name  = name_;
-        //desc.desc = registered_string_[i].first;
         desc.level = level_;
         desc.type = "string";
         group.parameters.push_back(desc);

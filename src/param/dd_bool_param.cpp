@@ -12,7 +12,6 @@ namespace ddr {
     void DDBool::prepGroup(Group &group) {
         ParamDescription desc;
         desc.name  = name_;
-        //desc.desc = registered_bool_[i].first;
         desc.level = level_;
         desc.type = "bool";
         group.parameters.push_back(desc);

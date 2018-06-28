@@ -97,8 +97,8 @@ namespace ddr {
          * @param value the value of the new parameter
          * @tparam T the type of value
          * @return -1 if the value could not be reassigned,
-         *          0 if the value was not changed,
-         *          otherwise the level of the parameter changed.
+         *         0 if the value was not changed,
+         *         otherwise the level of the parameter changed.
          */
          template <class T>
         static int reassign(DDMap& map, const string &name, T value);

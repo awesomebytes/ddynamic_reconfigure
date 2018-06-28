@@ -14,8 +14,8 @@ namespace ddr {
     }
 
     bool DDEnum::sameValue(Value val) {
-        if(val.getType() == "string") {
-            return dict_.find(val.toString())->second == val_;
+        if(val.getType() == "string" && dict_.find(val.toString())->second == val_) {
+            return true;
         } else {
             return val.toInt() == val_;
         }

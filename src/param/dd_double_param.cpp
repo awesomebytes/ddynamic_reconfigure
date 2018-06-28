@@ -12,7 +12,6 @@ namespace ddr {
     void DDDouble::prepGroup(Group &group) {
         ParamDescription desc;
         desc.name  = name_;
-        //desc.desc = registered_double_[i].first;
         desc.level = level_;
         desc.type = "double";
         group.parameters.push_back(desc);

@@ -1,5 +1,5 @@
 //
-// Created by rlb9 on 20/06/18.
+// Created by Noam Dori on 20/06/18.
 //
 
 #ifndef DDYNAMIC_RECONFIGURE_DD_ALL_PARAMS_H

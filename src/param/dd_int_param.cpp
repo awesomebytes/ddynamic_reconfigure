@@ -12,7 +12,6 @@ namespace ddr {
     void DDInt::prepGroup(Group &group) {
         ParamDescription desc;
         desc.name  = name_;
-        //desc.desc = registered_int_[i].first;
         desc.level = level_;
         desc.type = "int";
         group.parameters.push_back(desc);

@@ -27,16 +27,15 @@ include_directories(
 
 add_library(${PROJECT_NAME}
         src/DDynamicReconfigure.cpp
-        src/ddynamic_reconfigure.cpp include/ddynamic_reconfigure/ddynamic_reconfigure.h
+        src/ddynamic_reconfigure.cpp
         include/ddynamic_reconfigure/dd_param.h
-        src/param/dd_int_param.cpp include/ddynamic_reconfigure/param/dd_int_param.h
+        src/param/dd_int_param.cpp
         include/ddynamic_reconfigure/dd_value.h
-        src/param/dd_double_param.cpp include/ddynamic_reconfigure/param/dd_double_param.h
-        src/param/dd_bool_param.cpp include/ddynamic_reconfigure/param/dd_bool_param.h
-        src/param/dd_string_param.cpp include/ddynamic_reconfigure/param/dd_string_param.h
-        src/param/dd_enum_param.cpp include/ddynamic_reconfigure/param/dd_enum_param.h
-        include/ddynamic_reconfigure/param/dd_all_params.h
-        )
+        src/param/dd_double_param.cpp
+        src/param/dd_bool_param.cpp
+        src/param/dd_string_param.cpp
+        src/param/dd_enum_param.cpp
+        include/ddynamic_reconfigure/param/dd_all_params.h)
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 #add_executable(dynamic_reconfigure_node src/dynamic_reconfigure_node.cpp)
 #target_link_libraries(dynamic_reconfigure_node ${catkin_LIBRARIES})
@@ -67,8 +66,18 @@ install(DIRECTORY include/${PROJECT_NAME}/
 
 if (CATKIN_ENABLE_TESTING)
     find_package(rostest REQUIRED)
+
+    ## DDynamic tester
     add_rostest_gtest(ddynamic_reconfigure-test test/ddynamic_reconfigure.test test/test_ddynamic_reconfigure.cpp)
-    target_link_libraries(ddynamic_reconfigure-test
-                                ${PROJECT_NAME}
-                                gmock)
+    target_link_libraries(ddynamic_reconfigure-test ${PROJECT_NAME})
+
+    ## DDParam tester
+    foreach (param_type int double bool string enum)
+        add_rostest_gtest(dd_${param_type}-test test/dd_param/dd_${param_type}.test test/dd_param/test_dd_${param_type}.cpp)
+        target_link_libraries(dd_${param_type}-test ${PROJECT_NAME})
+    endforeach ()
+
+    ## DDValue tester
+#    add_rostest_gtest(dd_value-test test/dd_value.test test/test_dd_value.cpp)
+#    target_link_libraries(dd_value-test ${PROJECT_NAME})
 endif(CATKIN_ENABLE_TESTING)
