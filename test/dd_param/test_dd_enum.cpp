@@ -31,7 +31,7 @@ namespace ddr {
         ASSERT_TRUE(param.sameType(v));
         ASSERT_TRUE(param.sameValue(v));
 
-        v = Value(string("ONE"));
+        v = Value("ONE");
         ASSERT_TRUE(param.sameType(v));
         ASSERT_TRUE(param.sameValue(v));
 
@@ -43,7 +43,7 @@ namespace ddr {
         ASSERT_TRUE(param.sameType(v));
         ASSERT_FALSE(param.sameValue(v));
 
-        v = Value(string("TEN"));
+        v = Value("TEN");
         ASSERT_TRUE(param.sameType(v));
         ASSERT_FALSE(param.sameValue(v));
 
@@ -59,14 +59,14 @@ namespace ddr {
         ASSERT_TRUE(param.sameValue(Value(10)));
 
         param.setValue(v);
-        param.setValue(Value(string("TEN")));
+        param.setValue(Value("TEN"));
         ASSERT_FALSE(param.sameValue(v)); // makes sure anti-aliasing happens regarding string setValue
 
         ASSERT_TRUE(param.getValue().getType() == "int");
         ASSERT_TRUE(param.sameValue(Value(10)));
 
         // make sure setValue and sameValue can handle int-string values
-        v = Value(string("10"));
+        v = Value("10");
         ASSERT_TRUE(param.sameValue(v));
         param.setValue(v);
 
@@ -74,7 +74,7 @@ namespace ddr {
         ASSERT_TRUE(param.sameValue(Value(10)));
 
         // make sure setValue and sameValue can handle non-number non-dictionary strings
-        v = Value(string("TWO"));
+        v = Value("TWO");
         // 'two' is not in our dictionary, so we will attempt to place it in there using a hash conversion
         ASSERT_FALSE(param.sameValue(v));
         param.setValue(v);

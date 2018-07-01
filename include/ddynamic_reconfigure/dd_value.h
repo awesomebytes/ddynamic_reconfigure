@@ -23,7 +23,7 @@ namespace ddr {
         bool bool_val_;
     public:
         /**
-         * creates an integer value wrapper
+         * @brief creates an integer value wrapper
          * @param val the int to wrap
          */
         inline explicit Value(int val) : double_val_(0.0), bool_val_(false) {
@@ -32,7 +32,7 @@ namespace ddr {
         }
 
         /**
-         * creates an double value wrapper
+         * @brief creates an double value wrapper
          * @param val the double to wrap
          */
         inline explicit Value(double val) : int_val_(0), bool_val_(false) {
@@ -41,8 +41,8 @@ namespace ddr {
         }
 
         /**
-         * creates an integer value wrapper
-         * @param val the int to wrap
+         * @brief creates a string value wrapper
+         * @param val the string to wrap
          */
         inline explicit Value(const string &val) : int_val_(0), double_val_(0.0), bool_val_(false) {
             type_ = "string";
@@ -50,8 +50,16 @@ namespace ddr {
         }
 
         /**
-         * creates an integer value wrapper
-         * @param val the int to wrap
+         * @brief creates a c-string value wrapper, though it is considered a regular string.
+         * @param val the c-string to wrap
+         */
+        inline explicit Value(const char* val) {
+            *this = Value(string(val));
+        }
+
+        /**
+         * @brief creates an integer value wrapper
+         * @param val the boolean to wrap
          */
         inline explicit Value(bool val) : int_val_(0), double_val_(0.0) {
             type_ = "bool";
@@ -59,7 +67,7 @@ namespace ddr {
         }
 
         /**
-         * gets the type this value wrapper stores
+         * @brief gets the type this value wrapper stores
          * @return a string containing the type: one of {"int","double","bool","string"}
          */
         inline string getType() {
@@ -67,9 +75,9 @@ namespace ddr {
         }
 
         /**
-         * converts the stored value into an integer.
-         * @return for native integers: returns itself
-         *         for native doubles: returns a casted integer
+         * @brief converts the stored value into an integer.
+         * @return for native integers: returns itself.
+         *         for native doubles: returns a casted integer.
          *         for native booleans: returns 1 if true, 0 if false.
          *         for native strings: if the string contains an integer value (for example "1" contains the int '1' in it),
          *                             it will return the integer interpretation of that string.
@@ -87,6 +95,13 @@ namespace ddr {
             else { return int_val_; }
         }
 
+        /**
+         * @brief converts the stored value into a string.
+         * @return for native integers: returns the number in string form ('1' -> "1")
+         *         for native doubles: returns the number in shorthand string form ('1.0' -> "1")
+         *         for native booleans: returns "true" if true, "false" if false.
+         *         for native strings: returns itself.
+         */
         inline string toString() {
             stringstream ss;
             if(type_ == "string") { return str_val_;}
@@ -95,6 +110,15 @@ namespace ddr {
             else {ss << int_val_; return ss.str();}
         }
 
+        /**
+         * @brief converts the stored value into a double.
+         * @return for native integers: returns itself
+         *         for native doubles: returns a itself
+         *         for native booleans: returns 1.0 if true, 0.0 if false.
+         *         for native strings: if the string contains a floating value (for example "1.1" contains the double '1.1' in it),
+         *                             it will return the double interpretation of that string.
+         *                             Otherwise, returns the hash value of the string.
+         */
         inline double toDouble() {
             if(type_ == "string") {
                 double f;
@@ -107,11 +131,18 @@ namespace ddr {
             else {return int_val_;}
         }
 
+        /**
+         * @brief converts the stored value into a boolean.
+         * @return for native integers: returns true if the value is bigger than 0, false otherwise.
+         *         for native doubles: returns true if the value is bigger than 0, false otherwise.
+         *         for native booleans: returns itself
+         *         for native strings: returns true if the string's value is 'true', false otherwise.
+         */
         inline bool toBool() {
-            if(type_ == "string") { return str_val_.empty();}
+            if(type_ == "string") { return str_val_ == "true";}
             else if(type_ == "bool") {return bool_val_;}
-            else if(type_ == "double") {return double_val_ != 0.0;}
-            else {return int_val_ != 0;}
+            else if(type_ == "double") {return double_val_ > 0.0;}
+            else {return int_val_ > 0;}
         }
     };
 }

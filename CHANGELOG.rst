@@ -2,18 +2,18 @@
 Changelog for package ddynamic_reconfigure
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.0.6 (2018-06-24)
+0.0.6 (2018-07-01)
 ------------------
 * Recreated classes to enable OOD (adding more param types will be easy)
 * Added string and enum support
 * generalised the callback
   You can now look into the new values with the current callback format.
 * Level support added.
-* DO: add stream (<<) operator to ddynamic
-* DO: add unit-tests for all param classes
-* DO: add unit-tests for value class
-* DO: upgrade fake-server test & remove bool-server test
-* DO: add description support (optional ?)
+* Added unit-tests for all param classes.
+* Added unit-tests for value class.
+* DO: add stream (<<) operator to ddynamic.
+* DO: upgrade fake-server test & remove bool-server test.
+* DO: add description support (optional ?).
 * Contributors: Noam Dori
 
 0.0.5 (2016-04-14)

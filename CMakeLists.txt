@@ -77,6 +77,9 @@ if (CATKIN_ENABLE_TESTING)
         target_link_libraries(dd_${param_type}-test ${PROJECT_NAME})
     endforeach ()
 
+    add_rostest_gtest(dd_value-test test/dd_value.test test/test_dd_value.cpp)
+    target_link_libraries(dd_value-test ${PROJECT_NAME})
+
     ## DDValue tester
 #    add_rostest_gtest(dd_value-test test/dd_value.test test/test_dd_value.cpp)
 #    target_link_libraries(dd_value-test ${PROJECT_NAME})
