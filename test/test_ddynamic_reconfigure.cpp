@@ -1,9 +1,11 @@
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+#pragma ide diagnostic ignored "OCDFAInspection"
 #include <ddynamic_reconfigure/ddynamic_reconfigure.h>
 #include <gtest/gtest.h>
 #include <dynamic_reconfigure/Reconfigure.h>
 #include <ddynamic_reconfigure/param/dd_all_params.h>
 #include <exception>
-
 using namespace std;
 namespace ddr {
 
@@ -22,9 +24,6 @@ namespace ddr {
         DDFunc callback = bind(&basicCallback,_1,_2,&flag);
         dd.start(callback);
 
-        ros::AsyncSpinner spinner(1);
-        spinner.start();
-
         dynamic_reconfigure::Reconfigure srv;
 
         ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
@@ -32,8 +31,8 @@ namespace ddr {
     }
 
     void intCallback(const DDMap& map, int, int *flag) {
-        ASSERT_EQ("int",map.find("int_param")->second->getValue().getType());
-        *flag = map.find("int_param")->second->getValue().toInt();
+        ASSERT_EQ("int",at(map,"int_param")->getValue().getType());
+        *flag = at(map,"int_param")->getValue().toInt();
     }
 
     /**
@@ -47,9 +46,6 @@ namespace ddr {
         DDynamicReconfigure dd(nh);
         dd.add(new DDInt("int_param", 0, 0));
         dd.start(callback);
-
-        ros::AsyncSpinner spinner(1);
-        spinner.start();
 
         dynamic_reconfigure::Reconfigure srv;
         dynamic_reconfigure::IntParameter int_param;
@@ -72,8 +68,8 @@ namespace ddr {
     }
 
     void doubleCallback(const DDMap& map, int, double *flag) {
-        ASSERT_EQ("double",map.find("double_param")->second->getValue().getType());
-        *flag = map.find("double_param")->second->getValue().toDouble();
+        ASSERT_EQ("double",at(map,"double_param")->getValue().getType());
+        *flag = at(map,"double_param")->getValue().toDouble();
     }
 
     /**
@@ -87,9 +83,6 @@ namespace ddr {
         DDynamicReconfigure dd(nh);
         dd.add(new DDDouble("double_param", 0, 0));
         dd.start(callback);
-
-        ros::AsyncSpinner spinner(1);
-        spinner.start();
 
         dynamic_reconfigure::Reconfigure srv;
         dynamic_reconfigure::DoubleParameter double_param;
@@ -122,8 +115,8 @@ namespace ddr {
     }
 
     void boolCallback(const DDMap& map, int, bool *flag) {
-        ASSERT_EQ("bool",map.find("bool_param")->second->getValue().getType());
-        *flag = map.find("bool_param")->second->getValue().toBool();
+        ASSERT_EQ("bool",at(map,"bool_param")->getValue().getType());
+        *flag = at(map,"bool_param")->getValue().toBool();
     }
 
     /**
@@ -137,9 +130,6 @@ namespace ddr {
         DDynamicReconfigure dd(nh);
         dd.add(new DDBool("bool_param", 0, false));
         dd.start(callback);
-
-        ros::AsyncSpinner spinner(1);
-        spinner.start();
 
         dynamic_reconfigure::Reconfigure srv;
         dynamic_reconfigure::BoolParameter bool_param;
@@ -159,8 +149,8 @@ namespace ddr {
     }
 
     void strCallback(const DDMap& map, int, string *flag) {
-        ASSERT_EQ("string",map.find("string_param")->second->getValue().getType());
-        *flag = map.find("string_param")->second->getValue().toString();
+        ASSERT_EQ("string",at(map,"string_param")->getValue().getType());
+        *flag = at(map,"string_param")->getValue().toString();
     }
 
     /**
@@ -174,9 +164,6 @@ namespace ddr {
         DDynamicReconfigure dd(nh);
         dd.add(new DDString("string_param", 0, ""));
         dd.start(callback);
-
-        ros::AsyncSpinner spinner(1);
-        spinner.start();
 
         dynamic_reconfigure::Reconfigure srv;
         dynamic_reconfigure::StrParameter string_param;
@@ -199,8 +186,8 @@ namespace ddr {
     }
 
     void enumCallback(const DDMap& map, int, int *flag) {
-        ASSERT_EQ("int",map.find("enum_param")->second->getValue().getType());
-        *flag = map.find("enum_param")->second->getValue().toInt();
+        ASSERT_EQ("int",at(map,"enum_param")->getValue().getType());
+        *flag = at(map,"enum_param")->getValue().toInt();
     }
 
     /**
@@ -220,11 +207,7 @@ namespace ddr {
         dd.add(new DDEnum("enum_param", 0, "ONE", dict));
         dd.start(callback);
 
-        ros::AsyncSpinner spinner(1);
-        spinner.start();
-
         dynamic_reconfigure::Reconfigure srv;
-
 
         dynamic_reconfigure::IntParameter int_enum;
         int_enum.name = "enum_param";
@@ -266,11 +249,11 @@ namespace ddr {
 
     void complexCallback(const DDMap& map, int level) {
         ASSERT_EQ(0, level);
-        ASSERT_EQ(1, map.at("int_param")->getValue().toInt());
-        ASSERT_EQ(0.6, map.at("double_param")->getValue().toDouble());
-        ASSERT_EQ("Goodbye Home", map.at("str_param")->getValue().toString());
-        ASSERT_EQ(false, map.at("bool_param")->getValue().toBool());
-        ASSERT_EQ(3, map.at("enum_param")->getValue().toInt());
+        ASSERT_EQ(1, at(map,"int_param")->getValue().toInt());
+        ASSERT_EQ(0.6, at(map,"double_param")->getValue().toDouble());
+        ASSERT_EQ("Goodbye Home", at(map,"str_param")->getValue().toString());
+        ASSERT_EQ(false, at(map,"bool_param")->getValue().toBool());
+        ASSERT_EQ(3, at(map,"enum_param")->getValue().toInt());
     }
 
     /**
@@ -291,9 +274,6 @@ namespace ddr {
         }
         dd.add(new DDEnum("enum_param", 0, 0, dict));
         dd.start(complexCallback);
-
-        ros::AsyncSpinner spinner(1);
-        spinner.start();
 
         dynamic_reconfigure::Reconfigure srv;
 
@@ -350,9 +330,6 @@ namespace ddr {
 
         dd.start(&InternalClass::internalCallback,new InternalClass);
 
-        ros::AsyncSpinner spinner(1);
-        spinner.start();
-
         dynamic_reconfigure::Reconfigure srv;
 
         ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
@@ -379,9 +356,6 @@ namespace ddr {
             dd.add(new DDInt((format("param_%d") % i).str(), next, 0));
         }
         dd.start(callback);
-
-        ros::AsyncSpinner spinner(1);
-        spinner.start();
 
         dynamic_reconfigure::Reconfigure srv;
         dynamic_reconfigure::IntParameter int_param;
@@ -420,9 +394,6 @@ namespace ddr {
         DDynamicReconfigure dd(nh); // gets our main class running
         dd.start(badCallback);
 
-        ros::AsyncSpinner spinner(1);
-        spinner.start();
-
         dynamic_reconfigure::Reconfigure srv;
 
         ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
@@ -430,11 +401,11 @@ namespace ddr {
     }
 
     void missingCallback(const DDMap& map, int) {
-        ASSERT_EQ(map.end(),map.find("int_param"));
-        ASSERT_EQ(map.end(),map.find("double_param"));
-        ASSERT_EQ(map.end(),map.find("bool_param"));
-        ASSERT_EQ(map.end(),map.find("str_param"));
-        ASSERT_EQ(map.end(),map.find("enum_param"));
+        ASSERT_EQ(map.end(),at(map,"int_param"));
+        ASSERT_EQ(map.end(),at(map,"double_param"));
+        ASSERT_EQ(map.end(),at(map,"bool_param"));
+        ASSERT_EQ(map.end(),at(map,"str_param"));
+        ASSERT_EQ(map.end(),at(map,"enum_param"));
     }
 
     /**
@@ -444,9 +415,6 @@ namespace ddr {
         ros::NodeHandle nh("~");
         DDynamicReconfigure dd(nh); // gets our main class running
         dd.start(missingCallback);
-
-        ros::AsyncSpinner spinner(1);
-        spinner.start();
 
         dynamic_reconfigure::Reconfigure srv;
 
@@ -488,3 +456,4 @@ int main(int argc, char** argv) {
 
     return RUN_ALL_TESTS();
 }
+#pragma clang diagnostic pop

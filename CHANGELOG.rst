@@ -11,9 +11,9 @@ Changelog for package ddynamic_reconfigure
 * Level support added.
 * Added unit-tests for all param classes.
 * Added unit-tests for value class.
-* DO: add stream (<<) operator to ddynamic.
-* DO: upgrade fake-server test & remove bool-server test.
-* DO: add description support (optional ?).
+* Upgraded fake-server test & removed bool-server test (obsolete).
+* //TODO: add stream (<<) operator to ddynamic.
+* //TODO: add description support.
 * Contributors: Noam Dori
 
 0.0.5 (2016-04-14)

@@ -1,5 +1,8 @@
 #pragma clang diagnostic push
+#pragma ide diagnostic ignored "OCDFAInspection"
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
 #pragma ide diagnostic ignored "modernize-loop-convert"
+#pragma ide diagnostic ignored "modernize-use-auto"
 //
 // Created by Noam Dori on 18/06/18.
 //
@@ -164,6 +167,24 @@ namespace ddr {
         } else {
             return -1;
         }
+    }
+
+    Value DDynamicReconfigure::get(const char *name) {
+        return ddr::get(params_,name);
+    }
+
+    DDPtr at(const DDMap& map, const char *name) {
+        DDMap::const_iterator it = map.find(name);
+        if(it == map.end()) {
+            return shared_ptr<DDParam>();
+        } else { return it->second;}
+    }
+
+    Value get(const DDMap& map, const char *name) {
+        DDMap::const_iterator it = map.find(name);
+        if(it == map.end()) {
+            return Value("\000");
+        } else { return it->second->getValue();}
     }
 }
 #pragma clang diagnostic pop

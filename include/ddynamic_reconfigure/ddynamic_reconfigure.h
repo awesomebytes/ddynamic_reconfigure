@@ -29,7 +29,7 @@ namespace ddr {
     typedef function<void(const DDMap&,int)> DDFunc;
 
     /**
-     * @brief This class is the actual top-level API that manages the dynamic configuration of the files of d-reconfig.
+     * @brief This class is the actual top-level API that manages the dynamic configuration of the files of d-reconfigure.
      */
     class DDynamicReconfigure {
     public:
@@ -37,7 +37,7 @@ namespace ddr {
          * @brief creates the most basic instance of a 2d-conf object.
          * @param nh the node handler of the node this is placed at.
          */
-        DDynamicReconfigure(ros::NodeHandle nh);
+        explicit DDynamicReconfigure(ros::NodeHandle nh);
 
         /**
          * @brief adds a parameter to the list, allowing it to be generated.
@@ -100,8 +100,15 @@ namespace ddr {
          *         0 if the value was not changed,
          *         otherwise the level of the parameter changed.
          */
-         template <class T>
+        template <class T>
         static int reassign(DDMap& map, const string &name, T value);
+
+        /**
+        * @brief a tool people who use this API can use to find the value given within the param map.
+        * @param name the string to look for
+        * @return the value of param with the given name if it exists, a string value containing "\000" otherwise
+        */
+        Value get(const char* name);
     private:
 
         /**
@@ -142,5 +149,21 @@ namespace ddr {
         ros::ServiceServer set_service_;
         #pragma clang diagnostic pop
     };
+
+    /**
+     * @brief a tool people who use this API can use to find the param given within the param map.
+     * @param name the string to look for
+     * @param map the map to search
+     * @return the param with the given name if it exists, nullptr otherwise
+     */
+    DDPtr at(const DDMap& map, const char* name); // I could do this with an operator, but its bad design.
+
+    /**
+     * @brief a tool people who use this API can use to find the value given within the param map.
+     * @param name the string to look for
+     * @param map the map to search
+     * @return the value of param with the given name if it exists, a string value containing "\000" otherwise
+     */
+    Value get(const DDMap& map, const char* name); // I could do this with an operator, but its bad design.
 }
 #endif //DDYNAMIC_RECONFIGURE_DDYNAMIC_RECONFIGURE_H

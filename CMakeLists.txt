@@ -2,31 +2,26 @@ cmake_minimum_required(VERSION 2.8.3)
 project(ddynamic_reconfigure)
 
 find_package(catkin REQUIRED COMPONENTS
-  dynamic_reconfigure
-  roscpp
-)
+        dynamic_reconfigure
+        roscpp
+        message_generation)
 
 set(CMAKE_CXX_STANDARD 98)
 
+## Service generation
+add_service_files(DIRECTORY srv FILES TutorialParams.srv)
+generate_messages(DEPENDENCIES std_msgs)
+
+## Catkin setup
 catkin_package(
-  INCLUDE_DIRS include
-  LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS roscpp dynamic_reconfigure
-)
+        INCLUDE_DIRS include
+        LIBRARIES ${PROJECT_NAME}
+        CATKIN_DEPENDS dynamic_reconfigure)
+include_directories(include ${catkin_INCLUDE_DIRS})
+link_directories(/usr/local/lib)
 
-include_directories(
-  include
-  ${catkin_INCLUDE_DIRS}
-)
-
-#add dynamic reconfigure api
-#find_package(catkin REQUIRED dynamic_reconfigure)
-#generate_dynamic_reconfigure_options(
-#  cfg/Tutorials.cfg
-#)
-
+## DDynamic library
 add_library(${PROJECT_NAME}
-        src/DDynamicReconfigure.cpp
         src/ddynamic_reconfigure.cpp
         include/ddynamic_reconfigure/dd_param.h
         src/param/dd_int_param.cpp
@@ -37,28 +32,17 @@ add_library(${PROJECT_NAME}
         src/param/dd_enum_param.cpp
         include/ddynamic_reconfigure/param/dd_all_params.h)
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
-#add_executable(dynamic_reconfigure_node src/dynamic_reconfigure_node.cpp)
-#target_link_libraries(dynamic_reconfigure_node ${catkin_LIBRARIES})
 
-#make sure configure headers are built before any node using them
-#add_dependencies(dynamic_reconfigure_node ${PROJECT_NAME}_gencfg)
-
-#############  Test #################
-add_executable(fake_dynamic_reconfigure_server test/fake_dynamic_reconfigure_server.cpp)
-target_link_libraries(fake_dynamic_reconfigure_server ${PROJECT_NAME} ${catkin_LIBRARIES})
-
-add_executable(test_bool_dynamic_reconfigure_server test/test_bool_dynamic_reconfigure_server.cpp)
-target_link_libraries(test_bool_dynamic_reconfigure_server ${PROJECT_NAME} ${catkin_LIBRARIES})
+#############
+## Install ##
+#############
 
 install(TARGETS ${PROJECT_NAME}
-   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+        ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+        LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+        RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
-install(DIRECTORY include/${PROJECT_NAME}/
-   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-)
+install(DIRECTORY include/${PROJECT_NAME}/ DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})
 
 #############
 ## Testing ##
@@ -77,10 +61,15 @@ if (CATKIN_ENABLE_TESTING)
         target_link_libraries(dd_${param_type}-test ${PROJECT_NAME})
     endforeach ()
 
+    ## DDValue tester
     add_rostest_gtest(dd_value-test test/dd_value.test test/test_dd_value.cpp)
     target_link_libraries(dd_value-test ${PROJECT_NAME})
 
-    ## DDValue tester
-#    add_rostest_gtest(dd_value-test test/dd_value.test test/test_dd_value.cpp)
-#    target_link_libraries(dd_value-test ${PROJECT_NAME})
+    ## Full scale tester
+    add_executable(dd_server test/dd_full_scale/dd_server.cpp)
+    target_link_libraries(dd_server ${PROJECT_NAME} ${catkin_LIBRARIES})
+    add_dependencies(dd_server ${PROJECT_NAME}_gencpp)
+
+    add_rostest_gtest(dd_full_scale-test test/dd_full_scale/dd_full_scale.test test/dd_full_scale/dd_client.cpp)
+    target_link_libraries(dd_full_scale-test ${PROJECT_NAME})
 endif(CATKIN_ENABLE_TESTING)

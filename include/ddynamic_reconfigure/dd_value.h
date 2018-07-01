@@ -53,7 +53,7 @@ namespace ddr {
          * @brief creates a c-string value wrapper, though it is considered a regular string.
          * @param val the c-string to wrap
          */
-        inline explicit Value(const char* val) {
+        inline explicit Value(const char* val) : int_val_(0), double_val_(0.0), bool_val_(false) {
             *this = Value(string(val));
         }
 
