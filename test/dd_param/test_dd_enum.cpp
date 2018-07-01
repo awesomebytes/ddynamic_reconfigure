@@ -12,9 +12,9 @@ namespace ddr {
         dict["ONE"] = 1;
         dict["NEG-ONE"] = -1;
         dict["TEN"] = 10;
-        DDEnum param1("param1",0,0,dict);
-        DDEnum param2("",0,"ONE",dict);
-        DDEnum param3("\000",0, 0, dict); // NOLINT(bugprone-string-literal-with-embedded-nul)
+        DDEnum param1("param1",0,"param1",0,dict);
+        DDEnum param2("",0,"","ONE",dict);
+        DDEnum param3("\000",0,"\000", 0, dict); // NOLINT(bugprone-string-literal-with-embedded-nul)
     }
 
     /**
@@ -25,7 +25,7 @@ namespace ddr {
         dict["ONE"] = 1;
         dict["NEG-ONE"] = -1;
         dict["TEN"] = 10;
-        DDEnum param("dd_param",0,1,dict);
+        DDEnum param("dd_param",0,"dd_param",1,dict);
         // we won't do any tests on getLevel or getName, as those are implicit.
         Value v(1);
         ASSERT_TRUE(param.sameType(v));

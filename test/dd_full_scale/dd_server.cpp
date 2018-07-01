@@ -39,22 +39,22 @@ int main(int argc, char **argv) {
 
     // DDynamic setup stage
     DDynamicReconfigure dd(nh);
-    dd.add(new DDInt("int_param", 0, 0, 50, 100));
-    dd.add(new DDDouble("double_param", 0, .5, 0, 1));
-    dd.add(new DDString("str_param", 0, "Hello World"));
-    dd.add(new DDBool("bool_param", 0, true));
+    dd.add(new DDInt("int_param", 0, "An Integer parameter", 0, 50, 100));
+    dd.add(new DDDouble("double_param", 0, "A double parameter", .5, 0, 1));
+    dd.add(new DDString("str_param", 0, "A string parameter", "Hello World"));
+    dd.add(new DDBool("bool_param", 0, "A Boolean parameter", true));
     map<string, int> dict;
         dict["Small"] = 0;
         dict["Medium"] = 1;
         dict["Large"] = 2;
         dict["ExtraLarge"] = 3;
-    dd.add(new DDEnum("enum_param", 0, 1, dict));
+    dd.add(new DDEnum("enum_param", 0, "A size parameter which is edited via an enum", 1, dict));
     dd.start(callback);
 
     // Actual Server Node code
     ROS_INFO("Spinning node");
-    function<bool(TutorialParams::Request&, TutorialParams::Response&)> f = bind(paramService,_1,_2,dd);
-    ServiceServer checkParam = nh.advertiseService("get_params",f);
+    function<bool(TutorialParams::Request &, TutorialParams::Response &)> f = bind(paramService, _1, _2, dd);
+    ServiceServer checkParam = nh.advertiseService("get_params", f);
     MultiThreadedSpinner spinner(2);
     spinner.spin();
     return 0;

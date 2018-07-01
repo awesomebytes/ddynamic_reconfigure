@@ -13,6 +13,7 @@ namespace ddr {
         ParamDescription desc;
         desc.name  = name_;
         desc.level = level_;
+        desc.description = desc_;
         desc.type = "int";
         group.parameters.push_back(desc);
     }

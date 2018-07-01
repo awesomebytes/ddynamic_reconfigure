@@ -40,12 +40,15 @@ namespace ddr {
          * @param name the name of the parameter
          * @param level the change level
          * @param def the default value
+         * @param description details about the parameter
          * @param max the maximum allowed value. Defaults to INT32_MAX
          * @param min the minimum allowed value. Defaults to INT32_MIN
          */
-        inline DDInt(const string &name, unsigned int level, int def, int max = INT32_MAX, int min = INT32_MIN) {
+        inline DDInt(const string &name, unsigned int level, const string &description,
+                int def, int max = INT32_MAX, int min = INT32_MIN) {
             name_ = name;
             level_ = level;
+            desc_ = description;
             def_ = def;
             val_ = def;
             max_ = max;
@@ -66,9 +69,10 @@ namespace ddr {
          */
         int def_,max_,min_,val_;
         /**
-         * @brief the name of the parameter
+         * @brief the name of the parameter (name_),
+         * and its description (desc_)
          */
-        string name_;
+        string name_, desc_;
     };
 }
 

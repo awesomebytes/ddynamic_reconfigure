@@ -8,16 +8,16 @@ namespace ddr {
      * @brief preliminary test which makes sure we can use the object.
      */
     TEST(DDIntTest, constructorTest) { // NOLINT(cert-err58-cpp,modernize-use-equals-delete)
-        DDInt param1("param1",0,1);
-        DDInt param2("",0,1,100);
-        DDInt param3("\000",(unsigned int)-1, 1, -100, -10); // NOLINT(bugprone-string-literal-with-embedded-nul)
+        DDInt param1("param1",0,"param1",1);
+        DDInt param2("",0,"",1,100);
+        DDInt param3("\000",(unsigned int)-1,"param1", 1, -100, -10); // NOLINT(bugprone-string-literal-with-embedded-nul)
     }
 
     /**
      * @brief a test making sure we can handle all API for handling the values of the param
      */
     TEST(DDIntTest, valueTest) { // NOLINT(cert-err58-cpp,modernize-use-equals-delete)
-        DDInt param("dd_param",0,1);
+        DDInt param("dd_param",0,"param1",1);
         // we won't do any tests on getLevel or getName, as those are implicit.
         Value v(1);
         ASSERT_TRUE(param.sameType(v));

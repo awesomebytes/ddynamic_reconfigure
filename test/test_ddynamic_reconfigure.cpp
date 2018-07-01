@@ -44,7 +44,7 @@ namespace ddr {
         DDFunc callback = bind(&intCallback,_1,_2,&flag);
 
         DDynamicReconfigure dd(nh);
-        dd.add(new DDInt("int_param", 0, 0));
+        dd.add(new DDInt("int_param", 0,"int_param", 0));
         dd.start(callback);
 
         dynamic_reconfigure::Reconfigure srv;
@@ -81,7 +81,7 @@ namespace ddr {
         DDFunc callback = bind(&doubleCallback,_1,_2,&flag);
 
         DDynamicReconfigure dd(nh);
-        dd.add(new DDDouble("double_param", 0, 0));
+        dd.add(new DDDouble("double_param", 0,"double_param", 0));
         dd.start(callback);
 
         dynamic_reconfigure::Reconfigure srv;
@@ -128,7 +128,7 @@ namespace ddr {
         DDFunc callback = bind(&boolCallback,_1,_2,&flag);
 
         DDynamicReconfigure dd(nh);
-        dd.add(new DDBool("bool_param", 0, false));
+        dd.add(new DDBool("bool_param", 0,"bool_param", false));
         dd.start(callback);
 
         dynamic_reconfigure::Reconfigure srv;
@@ -162,7 +162,7 @@ namespace ddr {
         DDFunc callback = bind(&strCallback,_1,_2,&flag);
 
         DDynamicReconfigure dd(nh);
-        dd.add(new DDString("string_param", 0, ""));
+        dd.add(new DDString("string_param", 0,"string_param", ""));
         dd.start(callback);
 
         dynamic_reconfigure::Reconfigure srv;
@@ -204,7 +204,7 @@ namespace ddr {
         dict["TEN"] = 10;
 
         DDynamicReconfigure dd(nh);
-        dd.add(new DDEnum("enum_param", 0, "ONE", dict));
+        dd.add(new DDEnum("enum_param", 0,"enum_param", "ONE", dict));
         dd.start(callback);
 
         dynamic_reconfigure::Reconfigure srv;
@@ -262,17 +262,17 @@ namespace ddr {
     TEST(DDynamicReconfigureTest, callbackTest) { // NOLINT(cert-err58-cpp,modernize-use-equals-delete)
         ros::NodeHandle nh("~");
         DDynamicReconfigure dd(nh); // gets our main class running
-        dd.add(new DDInt("int_param", 0, 0, 50, 100));
-        dd.add(new DDDouble("double_param", 0, .5, 0, 1));
-        dd.add(new DDString("str_param", 0, "Hello World"));
-        dd.add(new DDBool("bool_param", 0, true));
+        dd.add(new DDInt("int_param", 0, "An Integer parameter", 0, 50, 100));
+        dd.add(new DDDouble("double_param", 0, "A double parameter", .5, 0, 1));
+        dd.add(new DDString("str_param", 0, "A string parameter", "Hello World"));
+        dd.add(new DDBool("bool_param", 0, "A Boolean parameter", true));
         map<string, int> dict; {
             dict["Small"] = 0;
             dict["Medium"] = 1;
             dict["Large"] = 2;
             dict["ExtraLarge"] = 3;
         }
-        dd.add(new DDEnum("enum_param", 0, 0, dict));
+        dd.add(new DDEnum("enum_param", 0, "A size parameter which is edited via an enum", 0, dict));
         dd.start(complexCallback);
 
         dynamic_reconfigure::Reconfigure srv;
@@ -353,7 +353,7 @@ namespace ddr {
         for (int i = 1; i < top; i++) {
             next = (unsigned int) random();
             or_sum |= next;
-            dd.add(new DDInt((format("param_%d") % i).str(), next, 0));
+            dd.add(new DDInt((format("param_%d") % i).str(), next,"level_param", 0));
         }
         dd.start(callback);
 
@@ -368,7 +368,7 @@ namespace ddr {
         ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
         ASSERT_EQ(or_sum, flag);
 
-        dd.add(new DDInt("unchanged_param", 1, 0)); //u-int max means everything is 1, so the result must also be that.
+        dd.add(new DDInt("unchanged_param", 1,"unchanged_param", 0)); //u-int max means everything is 1, so the result must also be that.
         dynamic_reconfigure::IntParameter unchanged_param;
         unchanged_param.name = "unchanged_param";
         unchanged_param.value = 1;

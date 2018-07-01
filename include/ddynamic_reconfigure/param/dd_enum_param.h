@@ -30,18 +30,22 @@ namespace ddr {
          * @param name the name of the parameter
          * @param level the change level
          * @param def the default value in integer form
+         * @param description details about the parameter
          * @param dictionary the alias dictionary this enum will use.
          */
-        DDEnum(const string &name, unsigned int level, int def, const map<string,int> &dictionary);
+        DDEnum(const string &name, unsigned int level, const string &description,
+                int def, const map<string,int> &dictionary);
 
         /**
          * creates a new int-enum param
          * @param name the name of the parameter
          * @param level the change level
          * @param def an alias of the default value
+         * @param description details about the parameter
          * @param dictionary the alias dictionary this enum will use.
          */
-        DDEnum(const string &name, unsigned int level, const string& def, const map<string,int> &dictionary);
+        DDEnum(const string &name, unsigned int level, const string &description,
+                const string& def, const map<string,int> &dictionary);
 
     protected:
         /** 

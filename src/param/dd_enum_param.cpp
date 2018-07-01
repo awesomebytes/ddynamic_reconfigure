@@ -29,8 +29,9 @@ namespace ddr {
         }
     }
 
-    DDEnum::DDEnum(const string &name, unsigned int level, int def, const map<string, int> &dictionary) :
-            DDInt(name,level,def),
+    DDEnum::DDEnum(const string &name, unsigned int level, const string &description,
+            int def, const map<string, int> &dictionary) :
+            DDInt(name,level,description,def),
             dict_(dictionary) {
         max_ = def;
         min_ = def;
@@ -40,8 +41,9 @@ namespace ddr {
         };
     }
 
-    DDEnum::DDEnum(const string &name, unsigned int level, const string &def, const map<string, int> &dictionary) :
-            DDInt(name,level,dictionary.find(def)->second),
+    DDEnum::DDEnum(const string &name, unsigned int level, const string &description,
+            const string &def, const map<string, int> &dictionary) :
+            DDInt(name,level,description,dictionary.find(def)->second),
             dict_(dictionary) {
         max_ = def_;
         min_ = def_;

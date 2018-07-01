@@ -38,11 +38,13 @@ namespace ddr {
          * @brief creates a new bool param
          * @param name the name of the parameter
          * @param level the change level
+         * @param description details about the parameter
          * @param def the default value
          */
-        DDBool(const string &name, unsigned int level, bool def) {
+        DDBool(const string &name, unsigned int level, const string &description, bool def) {
             name_ = name;
             level_ = level;
+            desc_ = description;
             def_ = def;
             val_ = def;
         }
@@ -58,9 +60,10 @@ namespace ddr {
          */
         bool def_,val_;
         /**
-         * @brief the name of the parameter
+         * @brief the name of the parameter (name_),
+         * and its description (desc_)
          */
-        string name_;
+        string name_, desc_;
     };
 }
 
