@@ -27,19 +27,19 @@ namespace ddr {
          * @brief gets the name of the parameter, that is, the ID used in the program when requesting it.
          * @return the unique string name of the parameter.
          */
-        virtual string getName() = 0;
+        virtual string getName() const = 0;
 
         /**
          * @brief fetches the level of the parameter
          * @return the level of the param.
          */
-        virtual int getLevel() = 0;
+        virtual int getLevel() const = 0;
 
         /**
          * @brief gets the value of this parameter.
          * @return the value stored in this param.
          */
-        virtual Value getValue()  = 0;
+        virtual Value getValue() const = 0;
         
         /**
          * @brief checks if this parameter is the same type as the value.
@@ -81,6 +81,14 @@ namespace ddr {
          * @note this is an internal method. It is recommended not to use it.
          */
         virtual void prepConfigDescription(ConfigDescription &conf_desc) = 0;
+
+        /**
+         * @brief the operator taking care of streaming the param values
+         * @param os the stream to place the param into
+         * @param param the param you want to place into the stream
+         * @return os, but with param added.
+         */
+        friend ostream& operator<<(ostream& os, const DDParam &param);
     };
 }
 #endif //DDYNAMIC_RECONFIGURE_DD_PARAM_H

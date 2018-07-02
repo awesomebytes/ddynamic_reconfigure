@@ -5,7 +5,7 @@
 #include <ddynamic_reconfigure/param/dd_int_param.h>
 
 namespace ddr {
-    string DDInt::getName() {
+    string DDInt::getName() const {
         return name_;
     }
 
@@ -36,7 +36,7 @@ namespace ddr {
         conf_desc.min.ints.push_back(param);
     }
 
-    int DDInt::getLevel() {
+    int DDInt::getLevel() const {
         return level_;
     }
 
@@ -52,7 +52,7 @@ namespace ddr {
         val_ = val.toInt();
     }
 
-    Value DDInt::getValue() {
+    Value DDInt::getValue() const {
         return Value(val_);
     }
 }

@@ -109,6 +109,14 @@ namespace ddr {
         * @return the value of param with the given name if it exists, a string value containing "\000" otherwise
         */
         Value get(const char* name);
+
+        /**
+         * @brief the operator taking care of streaming the param values
+         * @param os the stream to place the param into
+         * @param dd the dd-reconfigure you want to place into the stream
+         * @return os, but with dd-reconfigure added.
+         */
+        friend ostream& operator<<(ostream& os, const DDynamicReconfigure &dd);
     private:
 
         /**

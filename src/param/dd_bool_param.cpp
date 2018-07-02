@@ -5,7 +5,7 @@
 #include <ddynamic_reconfigure/param/dd_bool_param.h>
 
 namespace ddr {
-    string DDBool::getName() {
+    string DDBool::getName() const {
         return name_;
     }
 
@@ -36,7 +36,7 @@ namespace ddr {
         conf_desc.min.bools.push_back(param);
     }
 
-    int DDBool::getLevel() {
+    int DDBool::getLevel() const {
         return level_;
     }
 
@@ -52,7 +52,7 @@ namespace ddr {
         val_ = val.toBool();
     }
 
-    Value DDBool::getValue() {
+    Value DDBool::getValue() const {
         return Value(val_);
     }
 }

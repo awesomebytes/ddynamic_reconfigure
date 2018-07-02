@@ -24,6 +24,9 @@ namespace ddr {
         DDFunc callback = bind(&basicCallback,_1,_2,&flag);
         dd.start(callback);
 
+        ros::AsyncSpinner spinner(1);
+        spinner.start();
+
         dynamic_reconfigure::Reconfigure srv;
 
         ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
@@ -46,6 +49,9 @@ namespace ddr {
         DDynamicReconfigure dd(nh);
         dd.add(new DDInt("int_param", 0,"int_param", 0));
         dd.start(callback);
+
+        ros::AsyncSpinner spinner(1);
+        spinner.start();
 
         dynamic_reconfigure::Reconfigure srv;
         dynamic_reconfigure::IntParameter int_param;
@@ -83,6 +89,9 @@ namespace ddr {
         DDynamicReconfigure dd(nh);
         dd.add(new DDDouble("double_param", 0,"double_param", 0));
         dd.start(callback);
+
+        ros::AsyncSpinner spinner(1);
+        spinner.start();
 
         dynamic_reconfigure::Reconfigure srv;
         dynamic_reconfigure::DoubleParameter double_param;
@@ -131,6 +140,9 @@ namespace ddr {
         dd.add(new DDBool("bool_param", 0,"bool_param", false));
         dd.start(callback);
 
+        ros::AsyncSpinner spinner(1);
+        spinner.start();
+
         dynamic_reconfigure::Reconfigure srv;
         dynamic_reconfigure::BoolParameter bool_param;
         bool_param.name = "bool_param";
@@ -164,6 +176,9 @@ namespace ddr {
         DDynamicReconfigure dd(nh);
         dd.add(new DDString("string_param", 0,"string_param", ""));
         dd.start(callback);
+
+        ros::AsyncSpinner spinner(1);
+        spinner.start();
 
         dynamic_reconfigure::Reconfigure srv;
         dynamic_reconfigure::StrParameter string_param;
@@ -206,6 +221,9 @@ namespace ddr {
         DDynamicReconfigure dd(nh);
         dd.add(new DDEnum("enum_param", 0,"enum_param", "ONE", dict));
         dd.start(callback);
+
+        ros::AsyncSpinner spinner(1);
+        spinner.start();
 
         dynamic_reconfigure::Reconfigure srv;
 
@@ -275,6 +293,9 @@ namespace ddr {
         dd.add(new DDEnum("enum_param", 0, "A size parameter which is edited via an enum", 0, dict));
         dd.start(complexCallback);
 
+        ros::AsyncSpinner spinner(1);
+        spinner.start();
+
         dynamic_reconfigure::Reconfigure srv;
 
         dynamic_reconfigure::IntParameter int_param;
@@ -330,6 +351,9 @@ namespace ddr {
 
         dd.start(&InternalClass::internalCallback,new InternalClass);
 
+        ros::AsyncSpinner spinner(1);
+        spinner.start();
+
         dynamic_reconfigure::Reconfigure srv;
 
         ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
@@ -356,6 +380,9 @@ namespace ddr {
             dd.add(new DDInt((format("param_%d") % i).str(), next,"level_param", 0));
         }
         dd.start(callback);
+
+        ros::AsyncSpinner spinner(1);
+        spinner.start();
 
         dynamic_reconfigure::Reconfigure srv;
         dynamic_reconfigure::IntParameter int_param;
@@ -394,6 +421,9 @@ namespace ddr {
         DDynamicReconfigure dd(nh); // gets our main class running
         dd.start(badCallback);
 
+        ros::AsyncSpinner spinner(1);
+        spinner.start();
+
         dynamic_reconfigure::Reconfigure srv;
 
         ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
@@ -401,11 +431,11 @@ namespace ddr {
     }
 
     void missingCallback(const DDMap& map, int) {
-        ASSERT_EQ(map.end(),at(map,"int_param"));
-        ASSERT_EQ(map.end(),at(map,"double_param"));
-        ASSERT_EQ(map.end(),at(map,"bool_param"));
-        ASSERT_EQ(map.end(),at(map,"str_param"));
-        ASSERT_EQ(map.end(),at(map,"enum_param"));
+        ASSERT_EQ(map.end(),map.find("int_param"));
+        ASSERT_EQ(map.end(),map.find("double_param"));
+        ASSERT_EQ(map.end(),map.find("bool_param"));
+        ASSERT_EQ(map.end(),map.find("str_param"));
+        ASSERT_EQ(map.end(),map.find("enum_param"));
     }
 
     /**
@@ -415,6 +445,9 @@ namespace ddr {
         ros::NodeHandle nh("~");
         DDynamicReconfigure dd(nh); // gets our main class running
         dd.start(missingCallback);
+
+        ros::AsyncSpinner spinner(1);
+        spinner.start();
 
         dynamic_reconfigure::Reconfigure srv;
 
@@ -444,6 +477,36 @@ namespace ddr {
         srv.request.config.strs.push_back(enum_param);
 
         ASSERT_TRUE(ros::service::call(nh.getNamespace() + "/set_parameters", srv));
+    }
+
+    /**
+     * @brief tests that ddynamic's stream operator properly works
+     */
+    TEST(DDynamicReconfigureTest, streamTest) { // NOLINT(cert-err58-cpp,modernize-use-equals-delete)
+        ros::NodeHandle nh("~");
+        DDynamicReconfigure dd(nh); // gets our main class running
+        DDInt dd_int("int_param", 0, "An Integer parameter", 0, 50, 100);
+        DDDouble dd_double("double_param", 0, "A double parameter", .5, 0, 1);
+        DDString dd_string("str_param", 0, "A string parameter", "Hello World");
+        DDBool dd_bool("bool_param", 0, "A Boolean parameter", true);
+        dd.add(new DDInt(dd_int));
+        dd.add(new DDDouble(dd_double));
+        dd.add(new DDString(dd_string));
+        dd.add(new DDBool(dd_bool));
+        map<string, int> dict; {
+            dict["Small"] = 0;
+            dict["Medium"] = 1;
+            dict["Large"] = 2;
+            dict["ExtraLarge"] = 3;
+        }
+        DDEnum dd_enum("enum_param", 0, "A size parameter which is edited via an enum", 0, dict);
+        dd.add(new DDEnum(dd_enum));
+
+        stringstream stream, explicit_stream;
+        stream << dd;
+
+        explicit_stream << "{" << dd_bool << "," << dd_double << "," << dd_enum << "," << dd_int << "," << dd_string << "}";
+        ASSERT_EQ(explicit_stream.str(),stream.str());
     }
 }
 

@@ -1,26 +1,28 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(ddynamic_reconfigure)
 
-find_package(catkin REQUIRED COMPONENTS
-        dynamic_reconfigure
-        roscpp
-        message_generation)
+find_package(catkin REQUIRED COMPONENTS dynamic_reconfigure roscpp message_generation)
 
 set(CMAKE_CXX_STANDARD 98)
 
-## Service generation
+##############
+## Services ##
+##############
+
 add_service_files(DIRECTORY srv FILES TutorialParams.srv)
 generate_messages(DEPENDENCIES std_msgs)
 
-## Catkin setup
-catkin_package(
-        INCLUDE_DIRS include
-        LIBRARIES ${PROJECT_NAME}
-        CATKIN_DEPENDS dynamic_reconfigure)
-include_directories(include ${catkin_INCLUDE_DIRS})
-link_directories(/usr/local/lib)
+############
+## Catkin ##
+############
 
-## DDynamic library
+catkin_package(INCLUDE_DIRS include LIBRARIES ${PROJECT_NAME} CATKIN_DEPENDS dynamic_reconfigure)
+
+#############
+## Library ##
+#############
+
+include_directories(include ${catkin_INCLUDE_DIRS})
 add_library(${PROJECT_NAME}
         src/ddynamic_reconfigure.cpp
         include/ddynamic_reconfigure/dd_param.h
@@ -30,7 +32,7 @@ add_library(${PROJECT_NAME}
         src/param/dd_bool_param.cpp
         src/param/dd_string_param.cpp
         src/param/dd_enum_param.cpp
-        include/ddynamic_reconfigure/param/dd_all_params.h)
+        include/ddynamic_reconfigure/param/dd_all_params.h src/dd_param.cpp)
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 
 #############

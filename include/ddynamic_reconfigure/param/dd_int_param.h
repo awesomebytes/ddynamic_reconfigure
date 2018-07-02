@@ -17,7 +17,7 @@ namespace ddr {
      */
     class DDInt : public DDParam {
     public:
-        string getName();
+        string getName() const;
 
         void prepGroup(Group &group);
 
@@ -25,7 +25,7 @@ namespace ddr {
 
         void prepConfigDescription(ConfigDescription &conf_desc);
 
-        int getLevel();
+        int getLevel() const;
 
         bool sameType(Value val);
 
@@ -33,7 +33,7 @@ namespace ddr {
 
         void setValue(Value val);
 
-        Value getValue();
+        Value getValue() const;
 
         /**
          * creates a new int param

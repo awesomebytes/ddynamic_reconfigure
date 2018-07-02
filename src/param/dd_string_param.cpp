@@ -5,7 +5,7 @@
 #include <ddynamic_reconfigure/param/dd_string_param.h>
 
 namespace ddr {
-    string DDString::getName() {
+    string DDString::getName() const {
         return name_;
     }
 
@@ -36,7 +36,7 @@ namespace ddr {
         conf_desc.min.strs.push_back(param);
     }
 
-    int DDString::getLevel() {
+    int DDString::getLevel() const {
         return level_;
     }
 
@@ -52,7 +52,7 @@ namespace ddr {
         val_ = val.toString();
     }
 
-    Value DDString::getValue() {
+    Value DDString::getValue() const {
         return Value(val_);
     }
 }

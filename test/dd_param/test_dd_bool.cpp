@@ -42,6 +42,13 @@ namespace ddr {
         ASSERT_TRUE(param.getValue().getType() == "bool");
         ASSERT_TRUE(param.sameValue(Value(false)));
     }
+
+    TEST(DDBoolTest, streamTest) { // NOLINT(cert-err58-cpp,modernize-use-equals-delete)
+        DDBool param1("param1",0,"param1",true);
+        stringstream stream;
+        stream << param1;
+        ASSERT_EQ(param1.getName() + ":" + param1.getValue().toString(),stream.str());
+    }
 }
 
 

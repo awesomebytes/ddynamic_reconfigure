@@ -42,6 +42,13 @@ namespace ddr {
         ASSERT_TRUE(param.getValue().getType() == "double");
         ASSERT_TRUE(param.sameValue(Value(2)));
     }
+
+    TEST(DDDoubleTest, streamTest) { // NOLINT(cert-err58-cpp,modernize-use-equals-delete)
+        DDDouble param1("param1",0,"param1",1.0);
+        stringstream stream;
+        stream << param1;
+        ASSERT_EQ(param1.getName() + ":" + param1.getValue().toString(),stream.str());
+    }
 }
 
 

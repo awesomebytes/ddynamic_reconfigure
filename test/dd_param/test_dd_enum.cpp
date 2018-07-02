@@ -83,6 +83,17 @@ namespace ddr {
         int hash = (int)boost::hash<string>()("TWO");
         ASSERT_TRUE(param.sameValue(Value(hash)));
     }
+
+    TEST(DDEnumTest, streamTest) { // NOLINT(cert-err58-cpp,modernize-use-equals-delete)
+        map<string,int> dict;
+        dict["ONE"] = 1;
+        dict["NEG-ONE"] = -1;
+        dict["TEN"] = 10;
+        DDEnum param1("param1",0,"param1",1,dict);
+        stringstream stream;
+        stream << param1;
+        ASSERT_EQ(param1.getName() + ":" + param1.getValue().toString(),stream.str());
+    }
 }
 
 

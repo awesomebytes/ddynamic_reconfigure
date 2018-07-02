@@ -5,7 +5,7 @@
 #include <ddynamic_reconfigure/param/dd_double_param.h>
 
 namespace ddr {
-    string DDDouble::getName() {
+    string DDDouble::getName() const {
         return name_;
     }
 
@@ -36,7 +36,7 @@ namespace ddr {
         conf_desc.min.doubles.push_back(param);
     }
 
-    int DDDouble::getLevel() {
+    int DDDouble::getLevel() const {
         return level_;
     }
 
@@ -52,7 +52,7 @@ namespace ddr {
         val_ = val.toDouble();
     }
 
-    Value DDDouble::getValue() {
+    Value DDDouble::getValue() const {
         return Value(val_);
     }
 }

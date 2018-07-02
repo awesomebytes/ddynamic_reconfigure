@@ -42,6 +42,13 @@ namespace ddr {
         ASSERT_TRUE(param.getValue().getType() == "string");
         ASSERT_TRUE(param.sameValue(Value("2")));
     }
+
+    TEST(DDStringTest, streamTest) { // NOLINT(cert-err58-cpp,modernize-use-equals-delete)
+        DDString param1("param1",0,"param1","Hello World");
+        stringstream stream;
+        stream << param1;
+        ASSERT_EQ(param1.getName() + ":" + param1.getValue().toString(),stream.str());
+    }
 }
 
 

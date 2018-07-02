@@ -173,6 +173,15 @@ namespace ddr {
         return ddr::get(params_,name);
     }
 
+    ostream &operator<<(ostream &os, const DDynamicReconfigure &dd) {
+        os << "{" << *dd.params_.begin()->second;
+        for(DDMap::const_iterator it = ++dd.params_.begin(); it != dd.params_.end(); it++) {
+            os << "," << *it->second;
+        }
+        os << "}";
+        return os;
+    }
+
     DDPtr at(const DDMap& map, const char *name) {
         DDMap::const_iterator it = map.find(name);
         if(it == map.end()) {
