@@ -8,7 +8,7 @@
 #include "ddynamic_reconfigure/dd_param.h"
 #include "ddynamic_reconfigure/ddynamic_reconfigure.h"
 
-namespace ddr {
+namespace ddynamic_reconfigure {
     /**
      * @brief a boolean implementation of the parameter.
      * These are used to handle true/false values, or bit quantities if needed.

@@ -20,7 +20,7 @@ using namespace dynamic_reconfigure;
 
 #ifndef DDYNAMIC_RECONFIGURE_DDYNAMIC_RECONFIGURE_H
 #define DDYNAMIC_RECONFIGURE_DDYNAMIC_RECONFIGURE_H
-namespace ddr {
+namespace ddynamic_reconfigure {
     // this is the pointer to any type of Dynamic Dynamic parameter.
     typedef shared_ptr<DDParam> DDPtr;
     // this is a map from the DDParam name to the object. Acts like a set with a search function.
@@ -109,6 +109,13 @@ namespace ddr {
         * @return the value of param with the given name if it exists, a string value containing "\000" otherwise
         */
         Value get(const char* name);
+
+        /**
+        * @brief a tool people who use this API can use to find the param given within the param map.
+        * @param name the string to look for
+        * @return the param with the given name if it exists, nullptr otherwise
+        */
+        DDPtr at(const char* name);
 
         /**
          * @brief the operator taking care of streaming the param values

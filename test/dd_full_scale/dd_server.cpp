@@ -11,7 +11,7 @@
   Services:
   * /dd_server/set_parameters:  dynamic_reconfigure/Reconfigure
 */
-using namespace ddr;
+using namespace ddynamic_reconfigure;
 using namespace ros;
 using namespace ddynamic_reconfigure;
 

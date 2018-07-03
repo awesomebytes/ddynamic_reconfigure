@@ -4,7 +4,7 @@
 
 #include <ddynamic_reconfigure/param/dd_string_param.h>
 
-namespace ddr {
+namespace ddynamic_reconfigure {
     string DDString::getName() const {
         return name_;
     }

@@ -11,7 +11,7 @@
 #include <boost/foreach.hpp>
 
 using namespace boost;
-namespace ddr {
+namespace ddynamic_reconfigure {
 
     DDynamicReconfigure::DDynamicReconfigure(ros::NodeHandle nh) {
         nh_ = nh;
@@ -170,7 +170,11 @@ namespace ddr {
     }
 
     Value DDynamicReconfigure::get(const char *name) {
-        return ddr::get(params_,name);
+        return ddynamic_reconfigure::get(params_,name);
+    }
+
+    DDPtr DDynamicReconfigure::at(const char *name) {
+        return ddynamic_reconfigure::at(params_,name);
     }
 
     ostream &operator<<(ostream &os, const DDynamicReconfigure &dd) {

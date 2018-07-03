@@ -4,7 +4,7 @@
 
 #include <ddynamic_reconfigure/dd_param.h>
 
-namespace ddr {
+namespace ddynamic_reconfigure {
     ostream &operator<<(ostream &os, const DDParam &param) {
         os << param.getName() << ":" << param.getValue().toString();
         return os;

@@ -8,7 +8,7 @@
 #include "ddynamic_reconfigure/dd_param.h"
 #include "ddynamic_reconfigure/ddynamic_reconfigure.h"
 
-namespace ddr {
+namespace ddynamic_reconfigure {
     /**
      * @brief an integer implementation of the parameter.
      * This is used to 32 bit signed integral numbers.

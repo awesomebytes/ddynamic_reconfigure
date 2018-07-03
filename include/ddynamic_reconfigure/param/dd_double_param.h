@@ -9,7 +9,7 @@
 #include "ddynamic_reconfigure/ddynamic_reconfigure.h"
 
 
-namespace ddr {
+namespace ddynamic_reconfigure {
     typedef numeric_limits<double> d_limit;
     /**
      * @brief a double implementation of the parameter.

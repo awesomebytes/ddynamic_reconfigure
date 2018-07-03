@@ -10,7 +10,7 @@
 #include "dd_int_param.h"
 #include <boost/foreach.hpp>
 
-namespace ddr {
+namespace ddynamic_reconfigure {
     /**
      * @brief an integer enum implementation of the parameter.
      * This is an extension to the int parameter,

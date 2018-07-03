@@ -8,7 +8,7 @@
 
 #include "ddynamic_reconfigure/param/dd_enum_param.h"
 
-namespace ddr {
+namespace ddynamic_reconfigure {
 
     bool DDEnum::sameType(Value val) {
         return val.getType() == "int" || val.getType() == "string";

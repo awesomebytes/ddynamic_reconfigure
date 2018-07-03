@@ -7,7 +7,7 @@
 #include <ddynamic_reconfigure/param/dd_all_params.h>
 #include <exception>
 using namespace std;
-namespace ddr {
+namespace ddynamic_reconfigure {
 
     void basicCallback(const DDMap& map, int, bool *flag) {
         *flag = true;

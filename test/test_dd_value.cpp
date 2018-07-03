@@ -2,7 +2,7 @@
 #include <gtest/gtest.h>
 #include <ddynamic_reconfigure/dd_value.h>
 
-namespace ddr {
+namespace ddynamic_reconfigure {
 
     /**
      * @brief a test making sure integer interpretations of value work all around.

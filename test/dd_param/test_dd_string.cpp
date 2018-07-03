@@ -2,7 +2,7 @@
 #include <gtest/gtest.h>
 #include <ddynamic_reconfigure/param/dd_string_param.h>
 
-namespace ddr {
+namespace ddynamic_reconfigure {
 
     /**
      * @brief preliminary test which makes sure we can use the object.

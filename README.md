@@ -1,1 +1,333 @@
+DDynamic-Reconfigure
+==================================================
 [![Build Status](http://venus:8080/view/Integration%20Jobs/job/I40-ddynamic_reconfigure-dubnium-devel_dubnium/badge/icon)](http://venus:8080/view/Integration%20Jobs/job/I40-ddynamic_reconfigure-dubnium-devel_dubnium/)
+
+The DDynamic-Reconfigure package (or 2D-reconfig) is a **C++** based extension to Dynamic-Reconfigure (or 1D-reconfig) which allows C++ based nodes to self-initiate.
+
+## Dependencies
+2D-reconfig depends only on the default packages, not even 1D-reconfig.
+
+## Configuration
+Other than the installation of the package to your workspace, no other configuration is needed.
+The package used is called ``ddynamic_reconfigure``,
+and this both the namespace and the include directory used to implementthe program.
+
+## Implementation
+let us look into the following code, which implements 2D-Reconfig:
+````cpp
+#include <ros/ros.h>
+
+#include <ddynamic_reconfigure/ddynamic_reconfigure.h>
+#include <ddynamic_reconfigure/param/dd_all_params.h>
+
+using namespace ddynamic_reconfigure;
+
+void callback(const DDMap& map, int) {
+    ROS_INFO("Reconfigure Request: %d %f %s %s %ld",
+            get(map, "int_param").toInt(), get(map, "double_param").toDouble(),
+            get(map, "str_param").toString().c_str(),
+            get(map, "bool_param").toBool() ? "True" : "False",
+            map.size());
+}
+
+int main(int argc, char **argv) {
+    // ROS init stage
+    ros::init(argc, argv, "ddynamic_tutorials");
+    ros::NodeHandle nh;
+
+    // DDynamic setup stage
+    DDynamicReconfigure dd(nh);
+    dd.add(new DDInt("int_param", 0, "An Integer parameter", 50, 0, 100));
+    dd.add(new DDDouble("double_param", 0, "A double parameter", .5, 0, 1));
+    dd.add(new DDString("str_param", 0, "A string parameter", "Hello World"));
+    dd.add(new DDBool("bool_param", 0, "A Boolean parameter", true));
+    std::map<std::string, int> dict; // An enum to set size
+        dict["Small"] = 0;      // A small constant
+        dict["Medium"] = 1;     // A medium constant
+        dict["Large"] = 2;      // A large constant
+        dict["ExtraLarge"] = 3; // An extra large constant
+    dd.add(new DDEnum("enum_param", 0, "A size parameter which is edited via an enum", 1, dict));
+    dd.start(callback);
+
+    // Actual Server Node code
+    ROS_INFO("Spinning node");
+    ros::spin();
+    return 0;
+}
+````
+This segment of code is used for declaring the configuration file and for setting up the server in place of the node which uses the parameters.
+
+### Breakdown
+
+Let's break down the code line by line:
+```cpp
+#include <ros/ros.h>
+
+#include <ddynamic_reconfigure/ddynamic_reconfigure.h>
+#include <ddynamic_reconfigure/param/dd_all_params.h>
+
+using namespace ddynamic_reconfigure;
+```
+In here, we import all needed files:
+* ``<ros/ros.h>`` provides basic ROS management.
+* ``<ddynamic_reconfigure/ddynamic_reconfigure.h>`` provides the 2D-reconfigure API
+* ``<ddynamic_reconfigure/param/dd_all_params.h>`` allows you to use all default parameter types.
+
+The non include line allows us to use classes and functions provided in the ``ddynamic_reconfigure`` namespace
+without mentioning what package they are from.
+
+In contrast to 1D-reconfigure, these do not change.
+
+```cpp
+void callback(const DDMap& map, int) {
+    ROS_INFO("Reconfigure Request: %d %f %s %s %ld",
+            get(map, "int_param").toInt(), get(map, "double_param").toDouble(),
+            get(map, "str_param").toString().c_str(),
+            get(map, "bool_param").toBool() ? "True" : "False",
+            map.size());
+}
+```
+
+This is the callback used when 2D-reconfig receives a parameter change request.
+It takes two parameters: the first is a map of the new configuration mapping from the name of the parameter to the actual parameter object,
+and the second is the level, which is the highest level of severity caused by the parameter change.
+This is calculated by applying the OR operator on all levels of the parameters that changed.
+
+In this callback the level is not used, but we do print out the new configuration.
+
+```cpp
+int main(int argc, char **argv) {
+    // ROS init stage
+    ros::init(argc, argv, "ddynamic_tutorials");
+    ros::NodeHandle nh;
+```
+
+All this section do is initialise our ROS node and its handler.
+This is default stuff you do anyways.
+
+```cpp
+    // DDynamic setup stage
+    DDynamicReconfigure dd(nh);
+    dd.add(new DDInt("int_param", 0, "An Integer parameter", 50, 0, 100));
+    dd.add(new DDDouble("double_param", 0, "A double parameter", .5, 0, 1));
+    dd.add(new DDString("str_param", 0, "A string parameter", "Hello World"));
+    dd.add(new DDBool("bool_param", 0, "A Boolean parameter", true));
+```
+
+This is we start using 2D-reconfig. First, we initialise our 2D-reconfig object.
+Then, we start adding parameters to it. In 2D-reconfig, adding parameters is not just a simple function,
+but you have to add a parameter object (an instance of the abstract ``DDParam`` class).
+Let's look into the param objects above to see some common factors:
+* The type of the parameter is declared first by specifying ``new DDType()``.
+  For example, adding a new int parameter is done by doing ``dd.add(new DDInt(...))``
+
+* Within the param constructor, the first argument is the name of the parameter.
+  For example, in our int parameter, the name is set to ``"int_param"``.
+
+* The second argument is the level of the parameter, that is,
+  what needs to be reset or redone in the software/hardware in order to reapply this parameter?
+  Usually, the higher the level, the more drastic measures you need to take to re-implement the parameter.
+
+* The third parameter is the description of the parameter. This is great for documentation and for commandline tools.
+
+* The fourth parameter is the default value. Depending on the type of parameter, each may treat this argument differently.
+
+* ``DDInt`` and ``DDDouble`` have a fifth and sixth optional parameters: minimum and maximum allowed values.
+  While the server side does not care about these values, the client may want to know these.
+
+* It is important to note that the first 4 arguments are standardised for all param types,
+  but from there onwards each param type may choose what to place there.
+
+```cpp
+    std::map<std::string, int> dict; // An enum to set size
+        dict["Small"] = 0;      // A small constant
+        dict["Medium"] = 1;     // A medium constant
+        dict["Large"] = 2;      // A large constant
+        dict["ExtraLarge"] = 3; // An extra large constant
+    dd.add(new DDEnum("enum_param", 0, "A size parameter which is edited via an enum", 1, dict));
+```
+
+Here we add an int-enum parameter to our 2D-reconfig. ``DDEnum`` is an int like parameter that also contains a dictionary
+to remap predefined strings to usable integers. This param type has a required 5th argument (in contract to ``DDInt`` having 5th and 6th optional)
+which is a ``std::map<std::string,int>`` object mapping string values to integers.
+
+In the code above we can see how to create a dictionary of our liking:
+
+* we first initiate a map and name it with ``std::map<std::string,int> dict``.
+* we then populate it with the format ``dict[<key>] = <value>`` where ``<key>`` is the string alias for the value,
+  and ``<value>`` is the value you want to give an alias to.
+
+This dictionary is then added into the enum as the 5th argument.
+
+```cpp
+    dd.start(callback);
+
+    // Actual Server Node code
+    ROS_INFO("Spinning node");
+    ros::spin();
+    return 0;
+}
+```
+
+This section of code actually allows 2D-reconfigure to start working. Let's look into the two sections:
+* ``dd.start(callback)`` sets the callback of 2D-reconfigure to be the method ``callback`` and jump starts 2D-reconfigure.
+* ``ros::spin()`` allows 2D-reconfigure to listen to parameter-change requests.
+  Although the node now requires a spin, this does not mean you cannot add your own service-servers and subscribers to this node.
+  ``ros::spin()`` can take care of multiple subscribers/service-servers in the same spinners (although in the same thread).
+  If you want 2D-reconfig and your actual node to work on separate threads, consider using ``ros::MultiThreadedSpinner``.
+  2D-reconfigure only uses 1 service-server and no subscribers, so 1 thread for it is more than enough.
+
+### How does this compare with Dynamic-Reconfigure?
+Let's go over the main differences between 2D-reconfig's implementation with 1D-reconfig's implementation:
+
+#### Parameter Generation
+
+**1D-Reconfigure:**
+```pythonstub
+gen = ParameterGenerator()
+
+gen.add("int_param",    int_t,    0, "An Integer parameter", 50,  0, 100)
+gen.add("double_param", double_t, 0, "A double parameter",    .5, 0,   1)
+gen.add("str_param",    str_t,    0, "A string parameter",  "Hello World")
+gen.add("bool_param",   bool_t,   0, "A Boolean parameter",  True)
+
+size_enum = gen.enum([ gen.const("Small",      int_t, 0, "A small constant"),
+                       gen.const("Medium",     int_t, 1, "A medium constant"),
+                       gen.const("Large",      int_t, 2, "A large constant"),
+                       gen.const("ExtraLarge", int_t, 3, "An extra large constant")],
+                     "An enum to set size")
+
+gen.add("size", int_t, 0, "A size parameter which is edited via an enum", 1, 0, 3, edit_method=size_enum)
+
+exit(gen.generate(PACKAGE, "dynamic_tutorials", "Tutorials"))
+```
+**2D-Reconfigure:**
+```cpp
+DDynamicReconfigure dd(nh);
+
+dd.add(new DDInt("int_param", 0, "An Integer parameter", 50, 0, 100));
+dd.add(new DDDouble("double_param", 0, "A double parameter", .5, 0, 1));
+dd.add(new DDString("str_param", 0, "A string parameter", "Hello World"));
+dd.add(new DDBool("bool_param", 0, "A Boolean parameter", true));
+
+std::map<std::string, int> dict; // An enum to set size
+    dict["Small"] = 0;      // A small constant
+    dict["Medium"] = 1;     // A medium constant
+    dict["Large"] = 2;      // A large constant
+    dict["ExtraLarge"] = 3; // An extra large constant
+
+dd.add(new DDEnum("enum_param", 0, "A size parameter which is edited via an enum", 1, dict));
+
+dd.start(callback);
+```
+While these two code snippets accomplish the exact same things, they do so in different manners:
+* 1D-reconfig specifies the type of the parameter using a string (for example ``int_t = "int"``), while 2D-reconfig uses classes to accomplish that (``new DDInt`` in place of ``int_t``).
+  
+  Why classes instead of strings? In contrast to strings, classes can be extended and modified so they get a special treatment.
+  Take enums for example. In order to work with enums, 1D-reconfig had to add a whole new parameter input to handle the dictionary of the enums,
+  while 2D-reconfig simply extended the ``DDInt`` class (to ``DDEnum``) to handle dictionaries.
+  
+  This will be discussed more thoroughly on "Architecture".
+  
+* Enums are dramatically different. 
+    * 2D-reconfig uses well defined standard C++ objects for its dictionaries,
+      while 1D-reconfig defines its own constants and enums. This allows you to use well known and reliable API instead of a loosely defined one.
+  
+    * while ``DDEnum`` is an extension of ``DDInt``, you do not need to mention that. The API takes care of that for you!
+      An added bonus of this is that the enums automatically inference their boundaries, you don't need to mention ``int_t, max, min``.
+      
+    * 2D-reconfig's physical enums have been stripped of descriptions and the constants were as well.
+      This is the side effect of using a well known object. However, adding line comments to the parameters is a good alternative.
+
+* 2D-reconfig requires a node handler. This is due to how 1D-reconfigure handles parameters in its ROS architecture for C++.
+
+* all parameters provided in 1D-reconfig's last line are not needed in 2D-reconfig, which requires nothing.
+
+#### Callback & Server
+
+**1D-Reconfigure:**
+```cpp
+void callback(dynamic_tutorials::TutorialsConfig &config, uint32_t level) {
+  ROS_INFO("Reconfigure Request: %d %f %s %s %d", 
+            config.int_param, config.double_param, 
+            config.str_param.c_str(), 
+            config.bool_param?"True":"False", 
+            config.size);
+}
+
+int main(int argc, char **argv) {
+  ros::init(argc, argv, "dynamic_tutorials");
+
+  dynamic_reconfigure::Server<dynamic_tutorials::TutorialsConfig> server;
+  dynamic_reconfigure::Server<dynamic_tutorials::TutorialsConfig>::CallbackType f;
+
+  f = boost::bind(&callback, _1, _2);
+  server.setCallback(f);
+
+  ROS_INFO("Spinning node");
+  ros::spin();
+  return 0;
+}
+```
+**2D-Reconfigure:**
+```cpp
+void callback(const DDMap& map, int) {
+    ROS_INFO("Reconfigure Request: %d %f %s %s %ld",
+            get(map, "int_param").toInt(), get(map, "double_param").toDouble(),
+            get(map, "str_param").toString().c_str(),
+            get(map, "bool_param").toBool() ? "True" : "False",
+            map.size());
+}
+
+int main(int argc, char **argv) {
+    ros::init(argc, argv, "ddynamic_tutorials");
+    ros::NodeHandle nh;
+
+    DDynamicReconfigure dd(nh);
+    
+    dd.start(callback);
+
+    ROS_INFO("Spinning node");
+    ros::spin();
+    return 0;
+}
+```
+
+* The callback of the 1D-reconfigure requires a custom data-type per configuration. This is problematic, especially if you want dynamic parameters like vectors.
+  2D-reconfigure uses ``DDMap`` as its parameter container, which is generic and can work over multiple config types (and therefore can handle vectors)
+  
+  This also changes the way to access these parameters.
+  ``DDMap`` is actually a map from string to a pointer to the generic parameter used with the parameter generator.
+  This allows you to use all functions ``std::map`` provides, and regardless, 2D-reconfigure has additional API that could be used on ``DDMap`` objects,
+  such as ``ddynamic_reconfigure::get`` and ``ddynamic_reconfigure::at``.
+  
+  The generic interface no longer gives you a specific primitive value, but rather an instance of ``ddynamic_reconfigure::Value``,
+  which must be converted into a primitive type. While a bit cumbersome, this does allow rather implicit conversion between types.
+  
+* The 2D-reconfig server does not internally initialise a node handler. This means you can implement 2D-reconfigure within the node that actually uses the parameters.
+
+* 2D-reconfig actually needs you to start it. While a disadvantage, it is done anyways on 1D-reconfig,
+  and 2D-reconfig also has ``DDynamicReconfigure::setCallback`` to change callbacks, so nothing much is lost.
+
+* again, 2D-reconfig does not require you to have a custom made config class, making your init code a lot shorter.
+
+* ``start`` is a bit more fluid and allows you to place member function pointers or regular function pointers instead of ``boost::function``.
+  This helps clean up the code.
+
+### Simplified API
+
+#### DDynamicReconfigure
+
+#### DDParam
+
+#### Value
+
+## Architecture
+
+### Code Design
+
+### ROS Design
+
+## Extension
+
+***In all of these extensions, make sure to add the proper includes!***

@@ -4,7 +4,7 @@
 
 #include <ddynamic_reconfigure/param/dd_int_param.h>
 
-namespace ddr {
+namespace ddynamic_reconfigure {
     string DDInt::getName() const {
         return name_;
     }

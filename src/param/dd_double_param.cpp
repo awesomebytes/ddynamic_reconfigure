@@ -4,7 +4,7 @@
 
 #include <ddynamic_reconfigure/param/dd_double_param.h>
 
-namespace ddr {
+namespace ddynamic_reconfigure {
     string DDDouble::getName() const {
         return name_;
     }

@@ -10,7 +10,7 @@
 #define DDYNAMIC_RECONFIGURE_DD_VALUE_H
 using namespace std;
 using namespace boost;
-namespace ddr {
+namespace ddynamic_reconfigure {
     /**
      * @brief an object wrapper capable of storing an explicit value and its original type.
      * Can convert into other types, and provides API to do so and to lookup everything about it.

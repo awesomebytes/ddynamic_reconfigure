@@ -8,7 +8,7 @@
 #include "ddynamic_reconfigure/dd_param.h"
 #include "ddynamic_reconfigure/ddynamic_reconfigure.h"
 
-namespace ddr {
+namespace ddynamic_reconfigure {
     /**
      * @brief a string implementation of the parameter.
      * This is used to handle strings of characters of variable length.

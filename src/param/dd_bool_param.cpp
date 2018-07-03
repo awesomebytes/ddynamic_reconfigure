@@ -4,7 +4,7 @@
 
 #include <ddynamic_reconfigure/param/dd_bool_param.h>
 
-namespace ddr {
+namespace ddynamic_reconfigure {
     string DDBool::getName() const {
         return name_;
     }

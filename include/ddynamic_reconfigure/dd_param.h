@@ -13,7 +13,7 @@
 
 using namespace dynamic_reconfigure;
 using namespace std;
-namespace ddr {
+namespace ddynamic_reconfigure {
     /**
      * @brief This class is the generic parameter class. It is the physical parameter, and assumes nothing else.
      * this class should contain everything needed to generate/implement a dynamic server.

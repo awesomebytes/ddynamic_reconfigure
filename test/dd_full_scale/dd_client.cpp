@@ -8,7 +8,7 @@
 #include <dynamic_reconfigure/Reconfigure.h>
 
 using namespace ros;
-namespace ddr {
+namespace ddynamic_reconfigure {
 
     /**
      * @brief A ROS client making sure the server sends the new information.
