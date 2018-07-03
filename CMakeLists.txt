@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD 98)
 ## Services ##
 ##############
 
-add_service_files(DIRECTORY srv FILES TutorialParams.srv)
+add_service_files(DIRECTORY test FILES TutorialParams.srv)
 generate_messages(DEPENDENCIES std_msgs)
 
 ############
