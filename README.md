@@ -316,11 +316,41 @@ int main(int argc, char **argv) {
 
 ### Simplified API
 
-#### DDynamicReconfigure
+#### Value
+
+The Value class is used to wrap all basic data-types (bool,int,double,string) in something generic.
+The value object always stores an explicit basic data-type.
+This has three main uses:
+
+1. Values can represent all basic data-types. This means that arguments that need something relatively similar from all basic data-types can now just use the value in its argument.
+   This also goes for when you need to return something that is of different data-types from different classes (one can only return integer, other can only return strings).
+
+2. Values can be explicitly converted to all basic data-types they wrap. 
+   This means that converting an int to a string is far easier.
+
+3. Values store the type they were instantiated with. This can be tested against to get the original piece of data the value stored.
+
+##### Constructors
+
+``Value(int val)``,``Value(double val)``,``Value(bool val)``,``Value(string val)``,``Value(const char* val)``
+are all constructors that assign the value type to the type they are given (with the exception for ``const char*`` which returns string and is there for convenience),
+then store the value itself in its basic form.
+
+##### Getter
+
+There is only one true getter: ``getType()``, which returns the string name of the type it stores.
+
+##### Converters
+
+Each basic data-type has its own converter: ``toInt()``,``toDouble()``,``toBool()``,``toString()``.
+When one is called, the value will attempt to return a converted form of what it stores into the required data-type.
+The value does not just use an implicit cast. It tries to convert the datatype according to common needs that are not answered with other one-liners.
+For example, converting a string to an int, a Value will first attempt to scan the string fand see it fits a numeric format.
+If it succeeds, it will convert and return that number. Otherwise, it will return the next best thing: a hash value of the string.
 
 #### DDParam
 
-#### Value
+#### DDynamicReconfigure
 
 ## Architecture
 

@@ -12,8 +12,19 @@ using namespace std;
 using namespace boost;
 namespace ddynamic_reconfigure {
     /**
-     * @brief an object wrapper capable of storing an explicit value and its original type.
-     * Can convert into other types, and provides API to do so and to lookup everything about it.
+     * @brief The Value class is used to wrap all basic data-types (bool,int,double,string) in something generic.
+     *        The value object always stores an explicit basic data-type.
+     *        This has three main uses:
+     *
+     *        1. Values can represent all basic data-types.
+     *        This means that arguments that need something relatively similar from all basic data-types can now just use the value in its argument.
+     *        This also goes for when you need to return something that is of different data-types from different classes
+     *        (one can only return integer, other can only return strings).
+     *
+     *        2. Values can be explicitly converted to all basic data-types they wrap.
+     *        This means that converting an int to a string is far easier.
+     *
+     *        3. Values store the type they were instantiated with. This can be tested against to get the original piece of data the value stored.
      */
     class Value {
     private:
