@@ -390,6 +390,8 @@ parameters have three well known getters:
 
 Other getters, such as "getDesc()", may be added in the future.
 
+the parameters also have a stream (``<<``) operator which can be used to convert said parameters into neat strings.
+
 ##### Setter
 
 2D-params are only required to be dynamic with their values,
@@ -408,6 +410,66 @@ DDParams are also required to have some out-of-the-box testing features:
   when converted to the type of the internal value, are equal. This acts regardless of type.
 
 #### DDynamicReconfigure
+
+The DDynamicReconfigure class is the main class responsible for keeping track of parameters basic properties,
+values, descriptions, etc.
+
+It is also responsible of handling callbacks, config change requests, description setup and config setup, and the ROS publishers and services.
+
+To operate a DDynamic instance, you must go through the following procedure:
+
+1. Construct a DDynamicReconfigure instance with proper handling.
+2. Add parameters to the instance as needed with any of the ``add`` methods.
+3. Start the ROS services with any of the ``start`` methods.
+4. If you need to change the callback after startup you may do so using ``setCallback``.
+5. When you need to get any of the stored parameters, call either ``get`` or ``at`` on this instance,
+   rather than through the callback.
+
+##### Constructor
+
+DDynamicReconfigure has one sole constructor: ``DDynamicReconfigure(NodeHandle &nh)`` which constructs the instance and
+sets the handler to the one you are using.
+
+##### Parameter Handling
+
+All parameter handling is done through registration using an ``add`` function:
+
+* ``add(DDPtr param)`` is the main function which uses boost's shared pointers to represent the data in a virtual manner (and allows polymorphism)
+* ``add(DDParam *param)`` is a convenience function which converts ``param`` into a shared pointer and uses the other add function.
+
+Both of these functions will add a generic ``DDParam`` object into the given instance and will index it for later searches.
+Perhaps in the future a "remove(string name)" function will be added.
+
+##### Callback Handling & Startup
+
+Below are the two default functions that are used by the rest:
+
+* ``start()`` initializes all publishers and services and releases the needed messages for the commandline and other clients.
+* ``setCallback(DDFunc callback)`` sets the triggered callback to the one specified, and triggers nothing else.
+
+There is also ``clearCallback()`` which resets the callback to do nothing when triggered.
+
+Following are convenience function which utilize ``start()`` and ``setCallback()``:
+
+* ``start(DDFunc callback)`` calls start(), then setCallback(callback)
+* ``start(void(*callback)(const DDMap&, int))`` remaps the void pointer to a boost function (of type ``DDFunc``) then calls start(callback)
+* ``template<class T> void start(void(T::*callback)(const DDMap&, int), T *obj)``
+  binds the **member** function into a boost function (of type ``DDFunc``) then calls start(callback)
+
+##### Parameter Fetching
+
+There are multiple proper ways to get the values stored within the DDynamicReconfigure instance:
+
+* through ``at(string name)``: this will get you the pointer to the parameter with the name you specified.
+  If no such parameter exists it will return you a null-pointer (be careful not to de-reference those!)
+
+* through ``get(string name)``: this will get you the value stored in the parameter with the name you specified.
+  If no such parameter exists it will return you a value storing a NULL character.
+
+* through the stream (``<<``) operator: this will convert the 2D-reconfig instance into a string and stream it into the
+  given streamer.
+
+both ``at`` and ``get`` have alternate static versions which apply directly on ``DDMap`` objects.
 
 ## Architecture
 

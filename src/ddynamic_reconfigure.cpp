@@ -13,7 +13,7 @@
 using namespace boost;
 namespace ddynamic_reconfigure {
 
-    DDynamicReconfigure::DDynamicReconfigure(ros::NodeHandle nh) {
+    DDynamicReconfigure::DDynamicReconfigure(ros::NodeHandle &nh) {
         nh_ = nh;
     };
 
@@ -189,7 +189,7 @@ namespace ddynamic_reconfigure {
     DDPtr at(const DDMap& map, const char *name) {
         DDMap::const_iterator it = map.find(name);
         if(it == map.end()) {
-            return shared_ptr<DDParam>();
+            return shared_ptr<DDParam>(); // null pointer
         } else { return it->second;}
     }
 
