@@ -15,10 +15,32 @@ using namespace dynamic_reconfigure;
 using namespace std;
 namespace ddynamic_reconfigure {
     /**
-     * @brief This class is the generic parameter class. It is the physical parameter, and assumes nothing else.
-     * this class should contain everything needed to generate/implement a dynamic server.
-     * Since a lot of 1d-conf is written in python, perhaps it should generate the files?
-     * this class is abstract and should implement almost nothing on its own.
+     * @brief The DDParam class is the abstraction of all parameter types, and is the template for creating them.
+     *        At this point, not much is known about the parameter, but the following:
+     *
+     *        - the parameter has a name
+     *        - the parameter has a severity level
+     *        - the parameter has a description
+     *        - the parameter contains some value, though its type and contents are unknown.
+     *
+     *        Other than storing data, the parameter also has specialised methods to interact with DDynamicReconfigure in order to apply changes and send them.
+     *        These methods should not be touched by the user.
+     *
+     *        Since this class is abstract, the class has multiple implementations whicch are not directly exposed but are used,
+     *        so its worth checking out their descriptions.
+     *
+     *        While this class is abstract, it does have one implemented thing, and that is its stream operator (`<<`) which can be freely used.
+     *
+     *        While DDParam is abstract, all of its concrete implementations should follow this guideline:
+     *              DD<Type>(const string &name, unsigned int level, const string &description, <type> def, <extra-args>)
+     *        Where:
+     *        - <Type> is the type name you are implementing
+     *        - name is the reference name
+     *        - level is the severity level
+     *        - description is the object's description
+     *        - def is the default value and the first value stored right after construction.
+     *
+     *        You may then include extra arguments as you wish, required or optional.
      */
     class DDParam {
     public:
@@ -42,14 +64,17 @@ namespace ddynamic_reconfigure {
         virtual Value getValue() const = 0;
         
         /**
-         * @brief checks if this parameter is the same type as the value.
+         * @brief checks whether or not the raw value stored in the value is compatible with the given parameter.
+         *        Compatible is a very broad word in this scenario.
+         *        It means that the value can be placed in the parameter regardless of other limitations.
          * @param val the value to test
          * @return true is this parameter can handle the original value, false otherwise.
          */
         virtual bool sameType(Value val) = 0;
         
         /**
-         * @brief checks if this parameter has the same value as the value.
+         * @brief checks whether or not the value stored in the value object,
+         *        when converted to the type of the internal value, are equal. This acts regardless of type.
          * @param val the value to test
          * @return true is this parameter can is the same as the original value, false otherwise.
          */

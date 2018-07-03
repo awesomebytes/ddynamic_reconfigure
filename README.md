@@ -183,7 +183,7 @@ Let's go over the main differences between 2D-reconfig's implementation with 1D-
 #### Parameter Generation
 
 **1D-Reconfigure:**
-```pythonstub
+```python
 gen = ParameterGenerator()
 
 gen.add("int_param",    int_t,    0, "An Integer parameter", 50,  0, 100)
@@ -349,6 +349,63 @@ For example, converting a string to an int, a Value will first attempt to scan t
 If it succeeds, it will convert and return that number. Otherwise, it will return the next best thing: a hash value of the string.
 
 #### DDParam
+
+The DDParam class is *the* abstraction of all parameter types, and is the template for creating them.
+At this point, not much is known about the parameter, but the following:
+
+* the parameter has a name
+* the parameter has a severity level
+* the parameter has a description
+* the parameter contains some value, though its type and contents are unknown.
+
+Other than storing data, the parameter also has specialised methods to interact with DDynamicReconfigure in order to apply changes and send them.
+These methods should not be touched by the user.
+
+Since this class is abstract, the class has multiple implementations whicch are not directly exposed but are used,
+so its worth checking out their descriptions.
+
+While this class is abstract, it does have one implemented thing, and that is its stream operator (`<<`) which can be freely used.
+
+##### Generic Constructor
+
+While DDParam is abstract, all of its concrete implementations should follow this guideline:
+```cpp
+DD<Type>(const string &name, unsigned int level, const string &description, <some-type> def, <extra-args>)
+```
+Where:
+* ``<Type>`` is the type name you are implementing
+* ``name`` is the reference name
+* ``level`` is the severity level
+* ``description`` is the object's description
+* ``def`` is the default value and the first value stored right after construction.
+
+You may then include extra arguments as you wish, required or optional.
+
+##### Getters
+
+parameters have three well known getters:
+* ``getName()`` gets the name of the parameter.
+* ``getLevel()`` gets the severity level of the parameter.
+* ``getValue()`` gets the value the parameter stores.
+
+Other getters, such as "getDesc()", may be added in the future.
+
+##### Setter
+
+2D-params are only required to be dynamic with their values,
+so the only setter they are required to have is ``setValue(Value val)``,
+which changes the value the parameter stores.
+
+##### Testers
+
+DDParams are also required to have some out-of-the-box testing features:
+* ``sameType(Value val)`` checks whether or not 
+  the raw value stored in the value is compatible with the given parameter.
+  Compatible is a very broad word in this scenario.
+  It means that the value can be placed in the parameter regardless of other limitations.
+
+* ``sameValue(Value val)`` checks whether or not the value stored in the value object,
+  when converted to the type of the internal value, are equal. This acts regardless of type.
 
 #### DDynamicReconfigure
 
