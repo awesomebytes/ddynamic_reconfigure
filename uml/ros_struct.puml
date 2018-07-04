@@ -7,11 +7,11 @@ component DDynamicReconfigure as ddr {
     descpub -[hidden]->uppub
 }
 component client {
-    circle "/set_parameters" as pset
+    cloud "/set_parameters" as pset
 }
 component dynamic_reconfigure\ncommandline {
-    circle "/parameter_descriptions" as pdesc
-    circle "/parameter_updates" as pup
+    cloud "/parameter_descriptions" as pdesc
+    cloud "/parameter_updates" as pup
     pdesc -[hidden]->pup
 }
 
