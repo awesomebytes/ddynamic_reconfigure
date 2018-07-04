@@ -5,8 +5,6 @@
 #ifndef DDYNAMIC_RECONFIGURE_DD_ENUM_PARAM_H
 #define DDYNAMIC_RECONFIGURE_DD_ENUM_PARAM_H
 
-#include "ddynamic_reconfigure/dd_param.h"
-#include "ddynamic_reconfigure/ddynamic_reconfigure.h"
 #include "dd_int_param.h"
 #include <boost/foreach.hpp>
 

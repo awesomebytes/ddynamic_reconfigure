@@ -148,9 +148,11 @@ namespace ddynamic_reconfigure {
           */
          DDMap params_;
          /**
-          * @brief the publisher responsible of updating the descriptions of the parameter for commandline
+          * @brief the publisher responsible for updating the descriptions of the parameter for commandline (desc_pub_),
+          * and the publisher responsible for updating the configuration values for commandline and client (update_pub_).
+          * desc_pub_ publishes to "parameter_descriptions", and update_pub_ publishes to "/parameter_updates".
           */
-         ros::Publisher desc_pub_;
+         ros::Publisher desc_pub_, update_pub_;
 
     private:
 
@@ -187,15 +189,12 @@ namespace ddynamic_reconfigure {
          /**
           * @brief the use defined callback to call when parameters are updated.
           */
-          shared_ptr<function<void(const DDMap&, int)> > callback_;
-         /**
-          * @brief the publisher responsible of updating the configuration values for commandline.
-          */
-          ros::Publisher update_pub_;
+          shared_ptr<DDFunc> callback_;
           #pragma clang diagnostic push // CLion suppressor
           #pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
          /**
           * @brief the service server used to trigger parameter updates.
+          *        It also contains the new parameters sent from client or commandline.
           */
           ros::ServiceServer set_service_;
           #pragma clang diagnostic pop

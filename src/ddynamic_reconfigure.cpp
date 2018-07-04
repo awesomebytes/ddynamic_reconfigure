@@ -7,7 +7,6 @@
 // Created by Noam Dori on 18/06/18.
 //
 #include <ddynamic_reconfigure/ddynamic_reconfigure.h>
-#include <ddynamic_reconfigure/dd_value.h>
 #include <boost/foreach.hpp>
 
 using namespace boost;

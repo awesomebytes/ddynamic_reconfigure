@@ -6,7 +6,6 @@
 #define DDYNAMIC_RECONFIGURE_DD_STRING_PARAM_H
 
 #include "ddynamic_reconfigure/dd_param.h"
-#include "ddynamic_reconfigure/ddynamic_reconfigure.h"
 
 namespace ddynamic_reconfigure {
     /**
