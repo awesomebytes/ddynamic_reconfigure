@@ -477,45 +477,7 @@ both ``at`` and ``get`` have alternate static versions which apply directly on `
 
 #### Include Structure:
 
-```puml
-@startuml
-package ddynamic_reconfigure as ddynamic_reconfigure_pkg {
-    file ddynamic_reconfigure {
-        component at #Yellow
-        component get #Yellow
-        component DDynamicReconfigure
-        DDynamicReconfigure .u.> at
-        DDynamicReconfigure .u.> get
-    }
-    interface DDParam
-    folder param {
-        component DDInt
-        component DDDouble
-        component DDBool
-        component DDString
-        component DDEnum
-        file dd_all_params
-        DDInt -u-> DDParam
-        DDDouble -u-> DDParam
-        DDBool -u-> DDParam
-        DDString -u-> DDParam
-        DDEnum -u-> DDInt
-        dd_all_params -u-> DDInt
-        dd_all_params -u--> DDDouble
-        dd_all_params -u--> DDBool
-        dd_all_params -u--> DDString
-        dd_all_params -u-> DDEnum
-    }
-    component DDValue
-    DDynamicReconfigure --> DDParam
-    DDParam -> DDValue
-}
-component "ddynamic\nserver" as server
-server -> dd_all_params
-server -> ddynamic_reconfigure
-    
-@enduml
-```
+![]()
 
 To operate 2D-reconfigure, you will need to include 2 file types:
 
@@ -530,107 +492,8 @@ To operate 2D-reconfigure, you will need to include 2 file types:
 As a bonus, you also get two static class-less methods: ``get`` and ``at``.
 
 #### Class Structure:
-```puml
-@startuml
-class DDynamicReconfigure {
-    #nh_ : NodeHandle
-    #params_ : DDMap
-    #desc_pub_ : Publisher
-    #update_pub_ : Publisher
-    -callback_ : shared_ptr<DDFunc>
-    -set_service_ : ServiceServer
-    __
-    +add() : void
-    +setCallback() : void
-    +clearCallback() : void
-    +start() : void
-    ..getters..
-    +get() : Value
-    +at() : DDPtr
-    +operator<<() : ostream&
-    ..internal..
-    #makeDescription() : void
-    #makeConfig() : void
-    -reassign() <<T>> : int
-    -internalCallback() : bool
-    -getUpdates() : int
-}
-note right: DDPtr := shared_ptr<DDParam>\nDDMap := map<string,DDPtr>\nDDFunc := function<void(const DDMap&,int)>
-class DDValue {
-    -int_val_ : int
-    -double_val_ : double
-    -bool_val_ : bool
-    -str_val_ : string
-    -type_ : string
-    +getType() : string
-    +toInt() : int
-    +toDouble() : double
-    +toBool() : bool
-    +toString() : string
-}
-package dd_param <<Rectangle>> {
-    interface DDParam {
-        __
-        +getName() : string
-        +getLevel() : u_int
-        +getValue() : DDValue
-        +operator<<() : ostream&
-        ..setters..
-        +setValue() : void
-        ..testers..
-        +sameType() : bool
-        +sameValue() : bool
-        ..internal..
-        +prepGroup() : void
-        +prepConfig() : void
-        +prepConfigDescription() : void
-    }
-    class DDInt {
-        #level_ : u_int
-        #name_ : string
-        #desc_ : string
-        #def_ : int
-        #val_ : int
-        #max_ : int
-        #min_ : int
-    }
-    class DDDouble {
-        #level_ : u_int
-        #name_ : string
-        #desc_ : string
-        #def_ : double
-        #val_ : double
-        #max_ : double
-        #min_ : double
-    }
-    class DDBool {
-        #level_ : u_int
-        #name_ : string
-        #desc_ : string
-        #def_ : bool
-        #val_ : bool
-    }
-    class DDString {
-        #level_ : u_int
-        #name_ : string
-        #desc_ : string
-        #def_ : string
-        #val_ : string
-    }
-    class DDEnum {
-      #dict_ : const map<string,int>&
-    }
-}
 
-DDParam .> DDValue
-DDInt .u.|> DDParam
-DDDouble .u.|> DDParam
-DDBool .u.|> DDParam
-DDString .u.|> DDParam
-DDEnum -u-|> DDInt
-DDynamicReconfigure "0..*" --o DDParam
-@enduml
-```
+![]()
 
 Like the API section shows, there are only 3 major classes: ``DDValue``,``DDParam``,``DDynamicReconfigure``.
 
@@ -654,30 +517,7 @@ since the base function of DDynamic should not be modified.
 
 ### ROS Design
 
-```plantuml
-@startuml
-component DDynamicReconfigure as ddr {
-    rectangle update_pub_ <<Publisher>> as uppub
-    rectangle desc_pub_ <<Publisher>> as descpub
-    rectangle set_service_ <<ServiceServer>> as set
-    set -[hidden]->descpub
-    descpub -[hidden]->uppub
-}
-component client {
-    circle "/set_parameters" as pset
-}
-component dynamic_reconfigure\ncommandline {
-    circle "/parameter_descriptions" as pdesc
-    circle "/parameter_updates" as pup
-    pdesc -[hidden]->pup
-}
-
-uppub -> pup
-descpub -> pdesc
-set -> pset
-pset -l-> set
-@enduml
-```
+![]()
 
 Like 1D-reconfigure, 2D-reconfigure is built on two subscribers and one service:
 
@@ -754,7 +594,7 @@ namespace my_dd_reconfig {
         return *this;
     };
     
-    void &DDIntEnforcer::removeEnforced(DDPtr param) {
+    void DDIntEnforcer::removeEnforced(DDPtr param) {
         enforced_params_.remove(param);
     };
 }
