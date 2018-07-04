@@ -131,13 +131,13 @@ namespace ddynamic_reconfigure {
          * @brief makes the config descriptions for publishing
          * @return a ROS message of type ConfigDescription
          */
-         ConfigDescription makeDescription() const;
+         ConfigDescription makeDescription();
 
         /**
          * @brief makes the config update for publishing
          * @return a ROS message of type Config
          */
-         Config makeConfig() const;
+         Config makeConfig();
 
          /**
           * @brief the ROS node handler to use to make everything ROS related.

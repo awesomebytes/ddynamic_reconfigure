@@ -644,10 +644,13 @@ Its basic implementations (int,double,bool,string) have already been implemented
 These basic forms can also be further extended. For example, DDEnum **extends** DDInt because it has all of the features DDInt has.
 This can be done to other DDParam implementations, and you can also further extend the extended classes (for example, DDInvertibleEnum).
 An example is given at the Extension section if you want to look more into this.
+When anny DDParam implementation is extended, the user has access to everything within the object so that he can do what he needs to.
 
 The DDynamicReconfigure class is the concrete class that does the work against ROS and interfaces with the user.
 Unlike DDValue, this class can be extended, and it has an internal API that can aid users who wish to extend this class.
 In the Extension section below this is elaborated. Keep in mind that extending DDynamicReconfigure is not required.
+While DDynamicReconfigure allows extension, it does not provide full access to everything,
+since the base function of DDynamic should not be modified.
 
 ### ROS Design
 
@@ -688,3 +691,92 @@ Since the DDynamicReconfigure object is held on the server side, so are these RO
 ## Extension
 
 ***In all of these extensions, make sure to add the proper includes!***
+
+### Adding a new Parameter type
+
+To add a new parameter type, you must either:
+* Extend one of the existing classes
+* Implement the base class, ``DDParam``.
+
+In some cases, you might want your class to extend multiple classes, for example ``DDIntVector`` both implements ``DDVector`` and extends ``DDInt``.
+(``DDVector`` does not exist in the standard param library).
+
+Let us look into an example implementation of the param type "DDIntEnforcer", which will update other parameters to its value when it updates.
+
+```cpp
+#ifndef DDYNAMIC_RECONFIGURE_DD_INT_ENFORCER_PARAM_H
+#define DDYNAMIC_RECONFIGURE_DD_INT_ENFORCER_PARAM_H
+
+#include <ddynamic_reconfigure/param/dd_int_param.h>
+#include <list>
+
+namespace my_dd_reconfig {
+    // class definition
+    class DDIntEnforcer : public DDInt {
+    public:
+
+        void setValue(Value val);
+        
+        // adds a parameter to be enforced by this param.
+        DDIntEnforcer &addEnforced(DDPtr param);
+        
+        // removes a parameter from being enforced by this param.
+        void removeEnforced(DDPtr param);
+
+        /**
+         * creates a new int enforcer param
+         * @param name the name of the parameter
+         * @param level the change level
+         * @param def the default value
+         * @param description details about the parameter
+         * @param max the maximum allowed value. Defaults to INT32_MAX
+         * @param min the minimum allowed value. Defaults to INT32_MIN
+         */
+        inline DDIntEnforcer(const string &name, unsigned int level, const string &description,
+                int def, int max = INT32_MAX, int min = INT32_MIN) :
+                DDInt(name,level,description,def) {};
+
+    protected:
+        list<DDPtr> enforced_params_;
+    };
+    
+    DDIntEnforcer::setValue(Value val) {
+        val_ = val.toInt();
+        for(list<DDPtr>::iterator it = enforced_params_.begin(); it != enforced_params_.end(); ++it) {
+            if(!enforced_params_[it].sameValue(val)) {
+                enforced_params_[it].setValue(val);
+            }
+        }
+    };
+    
+    DDIntEnforcer &DDIntEnforcer::addEnforced(DDPtr param) {
+        enforced_params_.push_back(param);
+        return *this;
+    };
+    
+    void &DDIntEnforcer::removeEnforced(DDPtr param) {
+        enforced_params_.remove(param);
+    };
+}
+
+#endif //DDYNAMIC_RECONFIGURE_DD_INT_ENFORCER_PARAM_H
+```
+
+Notice how nothing within this class is private. This allows further extension of this class.
+Moreover, notice that in here we are also using variables inherited from ``DDInt``, specifically ``val_``.
+
+### Extending DDynamic's functions
+
+Extending DDynamicReconfigure means that you need additional functionality from the parameter server which 2D-reconfigure does not provide.
+If that is the case, extending a class from DDynamic gives you access to make new methods as need for the extra functionality,
+and access to the following to make work with DDynamic a bit easier:
+* ``nh_``: this is the node handler used to create all publishers and subscribers in the parent class.
+* ``params_`` this is the current parameter map 2D-reconfig uses to update parameters and add new ones.
+* ``desc_pub_``: As explained before, this is the publisher responsible of updating the descriptions for the parameters and other metadata for the client and commandline.
+* ``update_pub_``: This is the publisher responsible for updating the configuration values for the client and commandline.
+* ``makeDescription()``: This is a helper method that generates a new Description message to be published by ``desc_pub_``.
+  The message can be modified.
+* ``makeConfiguration()``: This is a helper method that generates a new Description message to be published by ``update_pub_``.
+  The message can be modified.
+
+From there, it's your choice what to do with these.

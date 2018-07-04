@@ -41,7 +41,7 @@ namespace ddynamic_reconfigure {
         update_pub_.publish(conf);
     }
 
-    Config DDynamicReconfigure::makeConfig() const {
+    Config DDynamicReconfigure::makeConfig() {
         Config conf;
         GroupState group_state; // I dunno, but its important?
 
@@ -55,7 +55,7 @@ namespace ddynamic_reconfigure {
         return conf;
     }
 
-    ConfigDescription DDynamicReconfigure::makeDescription() const {
+    ConfigDescription DDynamicReconfigure::makeDescription() {
         ConfigDescription conf_desc;
         Group group; // registers level and type.
 
