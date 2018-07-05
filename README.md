@@ -236,8 +236,9 @@ While these two code snippets accomplish the exact same things, they do so in di
     * while ``DDEnum`` is an extension of ``DDInt``, you do not need to mention that. The API takes care of that for you!
       An added bonus of this is that the enums automatically inference their boundaries, you don't need to mention ``int_t, max, min``.
       
-    * 2D-reconfig's physical enums have been stripped of descriptions and the constants were as well.
-      This is the side effect of using a well known object. However, adding line comments to the parameters is a good alternative.
+    * 2D-reconfig's supported physical enums have been stripped of descriptions and the constants were as well.
+      This is because the descriptions were not used anywhere. You can still make enums with const and enum descriptions, but they will not be used anywhere.
+      Adding line comments to the parameters is a good alternative.
 
 * 2D-reconfig requires a node handler. This is due to how 1D-reconfigure handles parameters in its ROS architecture for C++.
 

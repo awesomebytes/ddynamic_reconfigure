@@ -1,10 +1,13 @@
 #pragma clang diagnostic push
+#pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
 #pragma clang diagnostic ignored "-Wunknown-pragmas"
 #pragma ide diagnostic ignored "modernize-loop-convert"
 #pragma ide diagnostic ignored "modernize-use-auto"
 //
 // Created by Noam Dori on 20/06/18.
 //
+
+#include <ddynamic_reconfigure/param/dd_enum_param.h>
 
 #include "ddynamic_reconfigure/param/dd_enum_param.h"
 
@@ -52,6 +55,20 @@ namespace ddynamic_reconfigure {
             if(it->second > max_) {max_ = it->second;}
             if(it->second < min_) {min_ = it->second;}
         };
+    }
+
+    DDEnum::DDEnum(const string &name, unsigned int level, const string &description, int def,
+                   const pair<map<string, pair<int, string> >, string> &dictionary) :
+                   DDInt(name,level,description,def),
+                   dict_(simplify(dictionary)) {
+        *this = DDEnum(name,level,description,def,dict_);
+    }
+
+    DDEnum::DDEnum(const string &name, unsigned int level, const string &description, const string &def,
+                   const pair<map<string, pair<int, string> >, string> &dictionary) :
+                   DDInt(name,level,description,dictionary.first.find(def)->second.first),
+                   dict_(simplify(dictionary)){
+        *this = DDEnum(name,level,description,def,dict_);
     }
 }
 #pragma clang diagnostic pop

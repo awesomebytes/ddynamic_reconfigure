@@ -57,7 +57,7 @@ namespace ddynamic_reconfigure {
 
     ConfigDescription DDynamicReconfigure::makeDescription() {
         ConfigDescription conf_desc;
-        Group group; // registers level and type.
+        Group group; // registers level, type, description.
 
         // action 1 - prepping the Group msg for all params
         group.name = "default";
