@@ -61,14 +61,24 @@ namespace ddynamic_reconfigure {
                    const pair<map<string, pair<int, string> >, string> &dictionary) :
                    DDInt(name,level,description,def),
                    dict_(simplify(dictionary)) {
-        *this = DDEnum(name,level,description,def,dict_);
+        max_ = def;
+        min_ = def;
+        for(map<string,int>::const_iterator it = dict_.begin(); it != dict_.end(); it++) {
+            if(it->second > max_) {max_ = it->second;}
+            if(it->second < min_) {min_ = it->second;}
+        };
     }
 
     DDEnum::DDEnum(const string &name, unsigned int level, const string &description, const string &def,
                    const pair<map<string, pair<int, string> >, string> &dictionary) :
                    DDInt(name,level,description,dictionary.first.find(def)->second.first),
                    dict_(simplify(dictionary)){
-        *this = DDEnum(name,level,description,def,dict_);
+        max_ = def_;
+        min_ = def_;
+        for(map<string,int>::const_iterator it = dict_.begin(); it != dict_.end(); it++) {
+            if(it->second > max_) {max_ = it->second;}
+            if(it->second < min_) {min_ = it->second;}
+        };
     }
 }
 #pragma clang diagnostic pop
