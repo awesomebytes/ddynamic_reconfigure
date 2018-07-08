@@ -65,6 +65,24 @@ namespace ddynamic_reconfigure {
          void add(DDParam *param);
 
         /**
+         * removes the specified parameter from the list.
+         * @param param the parameter to remove.
+         */
+         void remove(DDPtr param);
+
+        /**
+         * removes the specified parameter from the list.
+         * @param param the parameter to remove.
+         */
+         void remove(DDParam *param);
+
+        /**
+         * removes the specified parameter from the list.
+         * @param param_name the name of the parameter to remove.
+         */
+         void remove(string param_name);
+
+        /**
          * @brief sets the callback to this.
          * @param callback a boost function with the method to use when values are updated.
          */

@@ -24,6 +24,18 @@ namespace ddynamic_reconfigure {
         add(shared_ptr<DDParam>(param));
     };
 
+    void DDynamicReconfigure::remove(DDPtr param) {
+        remove(param->getName());
+    };
+
+    void DDynamicReconfigure::remove(DDParam *param) {
+        remove(param->getName());
+    };
+
+    void DDynamicReconfigure::remove(string param_name) {
+        params_.erase(param_name);
+    };
+
     void DDynamicReconfigure::start() {
         ConfigDescription conf_desc = makeDescription(); // registers defaults and max/min descriptions.
         Config conf = makeConfig(); // the actual config file in C++ form.
@@ -188,7 +200,7 @@ namespace ddynamic_reconfigure {
     DDPtr at(const DDMap& map, const char *name) {
         DDMap::const_iterator it = map.find(name);
         if(it == map.end()) {
-            return shared_ptr<DDParam>(); // null pointer
+            return DDPtr(); // null pointer
         } else { return it->second;}
     }
 

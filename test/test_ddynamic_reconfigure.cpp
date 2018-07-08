@@ -9,6 +9,21 @@
 using namespace std;
 namespace ddynamic_reconfigure {
 
+    TEST(DDynamicReconfigureTest, mapTest) { // NOLINT(cert-err58-cpp,modernize-use-equals-delete)
+        ros::NodeHandle nh("~");
+        DDynamicReconfigure dd(nh); // gets our main class running
+
+        DDParam* ptr = new DDBool("exists",0,"",true);
+        dd.add(ptr);
+        ASSERT_NE(DDPtr(),dd.at("exists"));
+
+        dd.remove(ptr);
+        ASSERT_EQ(DDPtr(),dd.at("exists"));
+
+        dd.remove(DDPtr(ptr));
+        ASSERT_EQ(DDPtr(),dd.at("exists"));
+    }
+
     void basicCallback(const DDMap& map, int, bool *flag) {
         *flag = true;
     }
