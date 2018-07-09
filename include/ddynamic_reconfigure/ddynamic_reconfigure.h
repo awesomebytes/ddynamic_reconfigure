@@ -56,31 +56,34 @@ namespace ddynamic_reconfigure {
          * @brief adds a parameter to the list, allowing it to be generated.
          * @param param the pointer to the 2d-param to add to the list.
          */
-         void add(DDPtr param);
+         virtual void add(DDPtr param);
 
         /**
-         * @brief adds a parameter to the list, allowing it to be generated.
+         * @brief a convenience method for adding a parameter to the list, allowing it to be generated.
+         * @warning When adding in this manner, you must be careful. After using this method to add the parameter,
+         *          running any of the "remove" methods on this object WILL cause the entire param object to be deleted!
+         *          To make sure that you can add the object back after removing it, please use the other "add" method.
          * @param param the pointer to the 2d-param to add to the list.
          */
-         void add(DDParam *param);
+         virtual void add(DDParam *param);
 
         /**
          * removes the specified parameter from the list.
          * @param param the parameter to remove.
          */
-         void remove(DDPtr param);
+         virtual void remove(DDPtr param);
 
         /**
          * removes the specified parameter from the list.
          * @param param the parameter to remove.
          */
-         void remove(DDParam *param);
+         virtual void remove(DDParam *param);
 
         /**
          * removes the specified parameter from the list.
          * @param param_name the name of the parameter to remove.
          */
-         void remove(string param_name);
+         virtual void remove(string param_name);
 
         /**
          * @brief sets the callback to this.
@@ -96,7 +99,7 @@ namespace ddynamic_reconfigure {
         /**
          * @brief starts the server and config, without having any callback.
          */
-         void start();
+         virtual void start();
 
         /**
          * @brief starts the server, using the given callback in function form.

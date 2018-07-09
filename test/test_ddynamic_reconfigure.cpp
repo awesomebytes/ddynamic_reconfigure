@@ -14,13 +14,15 @@ namespace ddynamic_reconfigure {
         DDynamicReconfigure dd(nh); // gets our main class running
 
         DDParam* ptr = new DDBool("exists",0,"",true);
-        dd.add(ptr);
+        DDPtr dd_ptr = DDPtr(ptr);
+
+        dd.add(dd_ptr);
         ASSERT_NE(DDPtr(),dd.at("exists"));
 
         dd.remove(ptr);
         ASSERT_EQ(DDPtr(),dd.at("exists"));
 
-        dd.remove(DDPtr(ptr));
+        dd.remove(dd_ptr);
         ASSERT_EQ(DDPtr(),dd.at("exists"));
     }
 
