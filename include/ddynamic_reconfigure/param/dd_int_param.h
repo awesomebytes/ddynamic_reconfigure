@@ -14,7 +14,7 @@ namespace ddynamic_reconfigure {
      * This can also handle shorts, bytes, and other integrals provided they are not too big
      * (by then looping will occur)
      */
-    class DDInt : public DDParam {
+    class DDInt : virtual public DDParam {
     public:
         string getName() const;
 

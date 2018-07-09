@@ -15,7 +15,7 @@ namespace ddynamic_reconfigure {
      *        which allows creating string aliases for certain (if not all) numbers available.
      *
      */
-    class DDEnum : public DDInt {
+    class DDEnum : virtual public DDInt {
     private:
         /**
          * @brief converts old enum dictionaries to new ones.

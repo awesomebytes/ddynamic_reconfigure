@@ -13,7 +13,7 @@ namespace ddynamic_reconfigure {
      * This is used to handle strings of characters of variable length.
      * Like string, each param value can hold up to 2^32-1 characters.
      */
-    class DDString : public DDParam {
+    class DDString : virtual public DDParam {
     public:
         string getName() const;
 

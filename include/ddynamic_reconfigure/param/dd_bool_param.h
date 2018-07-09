@@ -13,7 +13,7 @@ namespace ddynamic_reconfigure {
      * These are used to handle true/false values, or bit quantities if needed.
      * In ROS, booleans are handled as u-bytes (u-int8), so be careful with these!
      */
-    class DDBool : public DDParam {
+    class DDBool : virtual public DDParam {
     public:
         string getName() const;
 

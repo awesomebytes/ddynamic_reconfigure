@@ -15,7 +15,7 @@ namespace ddynamic_reconfigure {
      * This is used to handle double-precision floating point numbers,
      * though it can handle single precision as well.
      */
-    class DDDouble : public DDParam {
+    class DDDouble : virtual public DDParam {
     public:
         string getName() const;
 
