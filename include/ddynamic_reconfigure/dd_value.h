@@ -81,7 +81,7 @@ namespace ddynamic_reconfigure {
          * @brief gets the type this value wrapper stores
          * @return a string containing the type: one of {"int","double","bool","string"}
          */
-        inline string getType() {
+        inline string getType() const {
             return type_;
         }
 
@@ -94,7 +94,7 @@ namespace ddynamic_reconfigure {
          *                             it will return the integer interpretation of that string.
          *                             Otherwise, returns the hash value of the string.
          */
-        inline int toInt() {
+        inline int toInt() const {
             if (type_ == "string") {
                 int i;
                 if (sscanf(str_val_.c_str(), "%d", &i) == 0) {
@@ -113,7 +113,7 @@ namespace ddynamic_reconfigure {
          *         for native booleans: returns "true" if true, "false" if false.
          *         for native strings: returns itself.
          */
-        inline string toString() {
+        inline string toString() const {
             stringstream ss;
             if(type_ == "string") { return str_val_;}
             else if(type_ == "bool") {return bool_val_ ? "true" : "false";}
@@ -130,7 +130,7 @@ namespace ddynamic_reconfigure {
          *                             it will return the double interpretation of that string.
          *                             Otherwise, returns the hash value of the string.
          */
-        inline double toDouble() {
+        inline double toDouble() const {
             if(type_ == "string") {
                 double f;
                 if(sscanf(str_val_.c_str(), "%lf", &f) == 0) {
@@ -149,7 +149,7 @@ namespace ddynamic_reconfigure {
          *         for native booleans: returns itself
          *         for native strings: returns true if the string's value is 'true', false otherwise.
          */
-        inline bool toBool() {
+        inline bool toBool() const {
             if(type_ == "string") { return str_val_ == "true";}
             else if(type_ == "bool") {return bool_val_;}
             else if(type_ == "double") {return double_val_ > 0.0;}
