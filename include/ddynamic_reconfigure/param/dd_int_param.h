@@ -44,7 +44,7 @@ namespace ddynamic_reconfigure {
          * @param min the minimum allowed value. Defaults to INT32_MIN
          */
         inline DDInt(const string &name, unsigned int level, const string &description,
-                int def, int max = INT32_MAX, int min = INT32_MIN) {
+                int def, int min = INT32_MIN, int max = INT32_MAX) {
             name_ = name;
             level_ = level;
             desc_ = description;

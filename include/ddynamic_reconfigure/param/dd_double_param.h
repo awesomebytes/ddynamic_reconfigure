@@ -45,7 +45,7 @@ namespace ddynamic_reconfigure {
          * @param min the minimum allowed value. Defaults to -DBL_MAX
          */
         DDDouble(const string &name, unsigned int level, const string &description, double def,
-                 double max = d_limit::infinity(), double min = -d_limit::infinity())
+                 double min = -d_limit::infinity(), double max = d_limit::infinity())
                 : max_(), min_() {
             name_ = name;
             level_ = level;
