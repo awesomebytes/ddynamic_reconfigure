@@ -21,8 +21,6 @@ using namespace dynamic_reconfigure;
 #ifndef DDYNAMIC_RECONFIGURE_DDYNAMIC_RECONFIGURE_H
 #define DDYNAMIC_RECONFIGURE_DDYNAMIC_RECONFIGURE_H
 namespace ddynamic_reconfigure {
-    // this is the pointer to any type of Dynamic Dynamic parameter.
-    typedef shared_ptr<DDParam> DDPtr;
     // this is a map from the DDParam name to the object. Acts like a set with a search function.
     typedef map<string,DDPtr> DDMap;
     // the function you will use a lot
