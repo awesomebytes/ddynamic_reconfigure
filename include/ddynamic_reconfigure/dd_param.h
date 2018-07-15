@@ -14,6 +14,8 @@
 using namespace dynamic_reconfigure;
 using namespace std;
 namespace ddynamic_reconfigure {
+    class DDParam;// declaration for the sake of order.
+    typedef shared_ptr<DDParam> DDPtr;
     /**
      * @brief The DDParam class is the abstraction of all parameter types, and is the template for creating them.
      *        At this point, not much is known about the parameter, but the following:
