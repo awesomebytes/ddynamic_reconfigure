@@ -160,6 +160,16 @@ namespace ddynamic_reconfigure {
          */
          Config makeConfig();
 
+        /**
+         * @brief calls the internal callback for the low-level service, not exposed to us.
+         * @param obj the object we are using for its callback.
+         * @param req ----(ROS)
+         * @param rsp ----(ROS)
+         * @return -------(ROS)
+         * @note this is here so that deriving methods can call the internal callback.
+         */
+        static bool internalCallback(DDynamicReconfigure *obj, Reconfigure::Request &req, Reconfigure::Response &rsp);
+
          /**
           * @brief the ROS node handler to use to make everything ROS related.
           */
@@ -189,15 +199,6 @@ namespace ddynamic_reconfigure {
          */
          template <class T>
          static int reassign(DDMap& map, const string &name, T value);
-
-        /**
-         * @brief calls the internal callback for the low-level service, not exposed to us.
-         * @param obj the object we are using for its callback.
-         * @param req ----(ROS)
-         * @param rsp ----(ROS)
-         * @return -------(ROS)
-         */
-         static bool internalCallback(DDynamicReconfigure *obj, Reconfigure::Request &req, Reconfigure::Response &rsp);
 
         /**
          * @brief gets the updates and assigns them to DDMap

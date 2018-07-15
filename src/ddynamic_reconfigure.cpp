@@ -21,7 +21,7 @@ namespace ddynamic_reconfigure {
     };
 
     void DDynamicReconfigure::add(DDParam *param) {
-        add(shared_ptr<DDParam>(param));
+        add(DDPtr(param));
     };
 
     void DDynamicReconfigure::remove(DDPtr param) {

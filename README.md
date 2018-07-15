@@ -10,7 +10,7 @@ The DDynamic-Reconfigure package (or 2D-reconfig) is a **C++** based extension t
 ## Configuration
 Other than the installation of the package to your workspace, no other configuration is needed.
 The package used is called ``ddynamic_reconfigure``,
-and this both the namespace and the include directory used to implementthe program.
+and this both the namespace and the include directory used to implement the program.
 
 ## Implementation
 let us look into the following code, which implements 2D-Reconfig:
@@ -345,8 +345,8 @@ There is only one true getter: ``getType()``, which returns the string name of t
 
 Each basic data-type has its own converter: ``toInt()``,``toDouble()``,``toBool()``,``toString()``.
 When one is called, the value will attempt to return a converted form of what it stores into the required data-type.
-The value does not just use an implicit cast. It tries to convert the datatype according to common needs that are not answered with other one-liners.
-For example, converting a string to an int, a Value will first attempt to scan the string fand see it fits a numeric format.
+The value does not just use an implicit cast. It tries to convert the data-type according to common needs that are not answered with other one-liners.
+For example, converting a string to an int, a Value will first attempt to scan the string and see it fits a numeric format.
 If it succeeds, it will convert and return that number. Otherwise, it will return the next best thing: a hash value of the string.
 
 #### DDParam
@@ -478,7 +478,7 @@ both ``at`` and ``get`` have alternate static versions which apply directly on `
 
 #### Include Structure:
 
-![](http://www.plantuml.com/plantuml/png/ZPDHIyCm4CVVyocE-TnzX35aFlWc2e8WbBEzXh9hKj94aT7lRkrHQkJipCCMxlU_vPTZEGuHGqmTcnwhCrg2klvqsBLL6QZohcbj2WGugFMoFrku69XMqxBUEtDPbUzwxyX5m0WtByJiFnHeQOkUJdB6utg4MM8QX7tQ7m3ZzOmb2OtpP-iYXGOhcXeUC60dr_HSKu3-km0NLU_UHRL-ykcDIKMtthCAdc9edLNHdKkYz6Fw9JANizjW5YP6KAJYaDr4a4ZfLBnqjgZfLEo4PGF97VyLc1EYkHaIsoiHaTwqMGSxcjypVqPEPFxw4nNv99Ozp6Lf7StwSxlbjRowWS8xXHtW0B8ryZMrvevhNNrhvaYkJXr_0G00)
+![](http://www.plantuml.com/plantuml/png/3OpBIiKm503tVeKkNBOHrD8AeWNHM-xYOWMt8O_JDZQFUdBIsBytCAjXcDT80YavUtLZlB99Gq9xlH1jyOan5BcU3Ir9fWYeWYVmLAlWcCWGWmDv44IczU65CueZb6OoSq9W6NBxK6dOMRcpoLZWaJ0fghSYNYYiu9_xORp3Cqw6_xoxlo-vDxyLltGDV8ZHZP_T6X_bzwaTSdzx_rRu1m00)
 
 To operate 2D-reconfigure, you will need to include 2 file types:
 
@@ -494,7 +494,7 @@ As a bonus, you also get two static class-less methods: ``get`` and ``at``.
 
 #### Class Structure:
 
-![](http://www.plantuml.com/plantuml/png/jLPDQzmm4BtxLvWiXAJDcfx3reJ6_IYq8JHfJmKpQyzwHMJ9IFBIqEv_xqXZRrTsGa_f8KxU6utUpBmHlR8EZEjRcLGIh4sBub51AwflM6cr4KrlCFsTfFHleRPbUfdUw1e_WQebCjg1WTPwfYY-GiTWZROgktxjuTj-BONTec6gxsfm-3Ivh43ADLGFdh9RC5YNdJEhelZGgohd68kkj6Xsea8VTiU_-i-GfIp3vpNKzTavHUoqg1cXezV33HEcaWZc6IvqACQoh47dqDWiuvW6EU87o1uP0aQAujOPHdI71fmsgrLWj7K6eJqTCWf52HN88UMYXGSig8z6T4ve5GbWzZfCA2QMbD9QqVZurUe-pucapCoDLqI5hhMMJ5CHtyDqB15yR9yexJ0rejcwePRqycqycrllWFod2lFtR0lTYceJgha89uZZ2NfoGrzVpyfBFYEJMSVEERsW2y_pWmz3AuFtM7cv0raULrDhCW-ECF_5Z2-9yUFoID88iZg6tME74SRZl2UOsX3ZJdzMRcpE21NXve2oY95uHrV7BIRmBgGxphnFEfe5D9ZMTHdMYIP7--T0DHBpVEX16Du6Aao7bW_uaUL7xJVGphIFt1VS8QlgIqePSQ7bWsl_EVc_tcN_scWZU7E6bB55EToXdOMJxA7jtBEOubGJRhuvVA0ps7qqkkzcTpCtsvqv-UpoxSFFqQVaYAD9BAJlRpbhxq91ExNPuQby6jzuECensO3X8VWrnuGQiRbUjkiBIkObcAbcU2fy3WiLmLFvVgbUK3nRAvREu5mAh_8BYfd2yzSh5lHUzVmgS19HEH_ER-pHeqpIyjFX-3v9nkSaomzhpwxE-kmFOKmdetEcC4za2d9lfZ0hNFRB0D8ToLF_tpXvasMlJjBbKXzENg6g-rR-1G00)
+![](http://www.plantuml.com/plantuml/png/3Op9IWD154Nt-GfTkBIhmLPK41C9mM6bYo1kGWslkukk8RmXB_bx2-xgSivP4rjaoMbr7OjF4a0mNStCHtes1grsK-HPd12WhuMXSEThDbQ1QWPtOI0JmgNO7Fq1eJ5Zd0J1AEZZS1lWP5hT-6I93iGedhjZUrwvBb1UDXy_FUwSwlX5Rzzb-pVifztJ-NpghJxqdxyBtRlz-o2wkRdRjgtMK4BJ_m40)
 
 Like the API section shows, there are only 3 major classes: ``DDValue``,``DDParam``,``DDynamicReconfigure``.
 
@@ -518,7 +518,7 @@ since the base function of DDynamic should not be modified.
 
 ### ROS Design
 
-![](http://www.plantuml.com/plantuml/png/TL11QWCn3BplAqpkeHy89eSyeBJ7jYoEfIO6Mojigr1A_jxLsgHBoleYovePUUPOgijLKXpyb7WYf6fEfszoAVWNz1DzXejaDAuOW6n-1ZEVZBuwkaGqmk0gZYpdqHmEptAEeLmnMwi4uVdzWG1O_0PSH_y91UjOC7y5ZyfvRLSjdQS8vMWr-xTh043wsDkrNB-ln-rpjvLj7uEMPj77IS3iddGzk-mILinbf_jO5ww9qE8QyrzUxpIFaoE8WV11yYutwhTou1ecwjBwiW5kKNUSiA8QVkrA1xTX45xSsWLuDs-x_XAKRJvuQUBSQdT40adn5m00)
+![](http://www.plantuml.com/plantuml/png/3OnBIyKm44Rt_HMwSDb6y848OWkrreNKXzp5tPGqcRQXUPIPYR7_ti2t-U2SKnDBvEXiSMcyib53H7knCk_qA0JAL2s6rpX50bJ1CtYkL7129g3WO3eOI6XzUEcC6X4oCvib8eW4wU6srF0hSbrWe94Oe-9gp_-PmmR-gNdxkiQFvRk15-XBY-7SpZ-lm_0v_mtTEtKRtKsd_ZwbvkgcpIjgy3hh_m00)
 
 Like 1D-reconfigure, 2D-reconfigure is built on two subscribers and one service:
 
@@ -619,5 +619,6 @@ and access to the following to make work with DDynamic a bit easier:
   The message can be modified.
 * ``makeConfiguration()``: This is a helper method that generates a new Description message to be published by ``update_pub_``.
   The message can be modified.
+* ``internalCallback()``: This is a helper method that allows you to call the base param change callback built into 2D-reconfigure.
 
 From there, it's your choice what to do with these.

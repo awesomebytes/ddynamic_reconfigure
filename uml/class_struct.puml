@@ -8,6 +8,7 @@ class DDynamicReconfigure {
     -set_service_ : ServiceServer
     __
     +add() : void
+    +remove(): void
     +setCallback() : void
     +clearCallback() : void
     +start() : void
@@ -18,8 +19,8 @@ class DDynamicReconfigure {
     ..internal..
     #makeDescription() : void
     #makeConfig() : void
+    #{static} internalCallback() : bool
     -reassign() <<T>> : int
-    -internalCallback() : bool
     -getUpdates() : int
 }
 note right: DDPtr := shared_ptr<DDParam>\nDDMap := map<string,DDPtr>\nDDFunc := function<void(const DDMap&,int)>
@@ -38,19 +39,19 @@ class DDValue {
 package dd_param <<Rectangle>> {
     interface DDParam {
         __
-        +getName() : string
-        +getLevel() : u_int
-        +getValue() : DDValue
+        +{abstract} getName() : string
+        +{abstract} getLevel() : u_int
+        +{abstract} getValue() : DDValue
         +operator<<() : ostream&
         ..setters..
-        +setValue() : void
+        +{abstract} setValue() : void
         ..testers..
-        +sameType() : bool
-        +sameValue() : bool
+        +{abstract} sameType() : bool
+        +{abstract} sameValue() : bool
         ..internal..
-        +prepGroup() : void
-        +prepConfig() : void
-        +prepConfigDescription() : void
+        +{abstract} prepGroup() : void
+        +{abstract} prepConfig() : void
+        +{abstract} prepConfigDescription() : void
     }
     class DDInt {
         #level_ : u_int
