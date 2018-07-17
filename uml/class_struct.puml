@@ -86,7 +86,11 @@ package dd_param <<Rectangle>> {
         #val_ : string
     }
     class DDEnum {
-      #dict_ : const map<string,int>&
+      #dict_ : const map<string,pair<int,string> >
+      #enum_description_ : string
+      -lookup() : int
+      -makeEditMethod() : string
+      -makeConst() : string
     }
 }
 

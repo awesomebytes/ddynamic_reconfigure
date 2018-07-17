@@ -9,6 +9,7 @@
 #include <boost/foreach.hpp>
 
 namespace ddynamic_reconfigure {
+    typedef map<string,pair<int,string> > EnumMap;
     /**
      * @brief an integer enum implementation of the parameter.
      *        This is an extension to the int parameter,
@@ -16,19 +17,9 @@ namespace ddynamic_reconfigure {
      *
      */
     class DDEnum : virtual public DDInt {
-    private:
-        /**
-         * @brief converts old enum dictionaries to new ones.
-         * @param complex the old dictionary
-         * @return a dictionary with similar contents but in a new format.
-         */
-        map<string,int> simplify(pair<map<string,pair<int,string> >,string> complex) {
-            map<string,int> ret;
-            for(map<string,pair<int,string> >::const_iterator it = complex.first.begin();
-                    it != complex.first.end(); ++it) { ret[it->first] = it->second.first; }
-            return ret;
-        }
     public:
+
+        void prepGroup(Group &group);
 
         bool sameType(Value val);
 
@@ -94,7 +85,34 @@ namespace ddynamic_reconfigure {
          * @brief A dictionary from the string aliases to their integer counterparts.
          * This method of storage allows integers to have multiple aliases.
          */
-        const map<string,int> &dict_;
+        const EnumMap dict_;
+        /**
+         * @brief this holds the physical enum's description. why is this here? because 1D-reconfigure.
+         */
+        string enum_description_;
+    private:
+        /**
+         * converts the value given to an integer according to the embedded dictionary.
+         * @param val the value to look up within the dictionary
+         * @return if the value is a string which exists in the dictionary, returns the int definition of the term given.
+         *         otherwise, returns the Value object defined conversion of the type to an integer.
+         */
+        int lookup(Value val);
+
+        /**
+         * generates the 'edit_method' sting for prepGroup().
+         * @return a string that should not be touched.
+         */
+        string makeEditMethod();
+
+        /**
+         * generates a 'const' sting for prepGroup().
+         * @param name the name of the constant
+         * @param value the value of the constant
+         * @param desc the description given to the constant.
+         * @return a string that should not be touched.
+         */
+        string makeConst(string name, int value, string desc);
     };
 }
 
