@@ -478,7 +478,7 @@ both ``at`` and ``get`` have alternate static versions which apply directly on `
 
 #### Include Structure:
 
-![](http://www.plantuml.com/plantuml/png/3OpBIiKm503tVeKkNBOHrD8AeWNHM-xYOWMt8O_JDZQFUdBIsBytCAjXcDT80YavUtLZlB99Gq9xlH1jyOan5BcU3Ir9fWYeWYVmLAlWcCWGWmDv44IczU65CueZb6OoSq9W6NBxK6dOMRcpoLZWaJ0fghSYNYYiu9_xORp3Cqw6_xoxlo-vDxyLltGDV8ZHZP_T6X_bzwaTSdzx_rRu1m00.png)
+![](http://www.plantuml.com/plantuml/png/3OnDIuP054Rt_efQjCm9JB8WqcXJ44Nu4hIH-RZgu7p8dNiT_FSDFAk7SqwVI2AnTzMr3Tgn0KPtjHBjwKa8bBbUBAsiE07g60W2rJfw8JEaw46T14aOSmRfhPuG2ZFRXH54XjpTtneuHAcBsJgO4Y5hglTol53S83mFxpzt-FNuyA7KvLDVpAiST3isgg6vu-_VRakj-ZlMCGytpLjPrKCmHVy7)
 
 To operate 2D-reconfigure, you will need to include 2 file types:
 
@@ -494,7 +494,7 @@ As a bonus, you also get two static class-less methods: ``get`` and ``at``.
 
 #### Class Structure:
 
-![](http://www.plantuml.com/plantuml/png/3Op9IWD154Nt-GfTkBIhmLPK41C9mM6bYo1kGWslkukk8RmXB_bx2-xgSivP4rjaoMbr7OjF4a0mNStCHtes1grsK-HPd12WhuMXSEThDbQ1QWPtOI0JmgNO7Fq1eJ5Zd0J1AEZZS1lWP5hT-6I93iGedhjZUrwvBb1UDXy_FUwSwlX5Rzzb-pVifztJ-NpghJxqdxyBtRlz-o2wkRdRjgtMK4BJ_m40.png)
+![](http://www.plantuml.com/plantuml/png/3OnBIyD054Rt_HMwS6d6HmDH43EIZRfgmOBTX7dS96Fc4Uwzqw7_te5lzN7EwOaLSWv-T-kYyTb2Hd-pC6_qAWIgqioEbwmp0PeK6I8t9WMX2b0AeAyC9AozHXMS6H4gCxav8uW2fTlVMxY8MXV6AwAH6BFXPglFEwSLuflyF3wWXDFJYlmrdDpXyNl_yN9e_xhsz-UevKgjFbzWAlBkUQZRzH1jrVy1)
 
 Like the API section shows, there are only 3 major classes: ``DDValue``,``DDParam``,``DDynamicReconfigure``.
 
@@ -518,7 +518,7 @@ since the base function of DDynamic should not be modified.
 
 ### ROS Design
 
-![](http://www.plantuml.com/plantuml/png/3OnBIyKm44Rt_HMwSDb6y848OWkrreNKXzp5tPGqcRQXUPIPYR7_ti2t-U2SKnDBvEXiSMcyib53H7knCk_qA0JAL2s6rpX50bJ1CtYkL7129g3WO3eOI6XzUEcC6X4oCvib8eW4wU6srF0hSbrWe94Oe-9gp_-PmmR-gNdxkiQFvRk15-XBY-7SpZ-lm_0v_mtTEtKRtKsd_ZwbvkgcpIjgy3hh_m00.png)
+![](http://www.plantuml.com/plantuml/png/3OnDIyKm44Nt_HMwS6aZg222s8BWgo8QGOHkGZwcRMoJb9b9m_lt1kxcmZcd8zR8EMpDfOzsomuoRXSByqwFGg0kxUnvoIOJe4sH8N9hKn2w0AK0vin0mhbprC5RXL2PoSyPGHGe3tVN3WvHwm8JAMBCbjkz_cTEAyIdVlY-mTFRwxiCgAIHu_JpgORVrG38hzF7ljAz6Oy_MVghsvUwfeFegluF)
 
 Like 1D-reconfigure, 2D-reconfigure is built on two subscribers and one service:
 
