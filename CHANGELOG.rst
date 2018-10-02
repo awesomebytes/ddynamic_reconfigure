@@ -2,6 +2,20 @@
 Changelog for package ddynamic_reconfigure
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.0.6 (2018-07-02)
+------------------
+* Recreated classes to enable OOD (adding more param types will be easy)
+* Added string and enum support
+* generalised the callback
+  You can now look into the new values with the current callback format.
+* Level support added.
+* Added unit-tests for all param classes.
+* Added unit-tests for value class.
+* Upgraded fake-server test & removed bool-server test (obsolete).
+* Added description support.
+* Added stream (<<) operator to ddynamic and its params.
+* Contributors: Noam Dori
+
 0.0.5 (2016-04-14)
 ------------------
 * Merge branch 'user-callback' into 'dubnium-devel'
