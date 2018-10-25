@@ -98,7 +98,7 @@ namespace ddynamic_reconfigure {
             if (type_ == "string") {
                 int i;
                 if (sscanf(str_val_.c_str(), "%d", &i) == 0) {
-                    return (int) hash<string>()(str_val_);
+                    return (int) boost::hash<string>()(str_val_);
                 }
                 return i;
             } else if (type_ == "bool") { return bool_val_ ? 1 : 0; }
@@ -134,7 +134,7 @@ namespace ddynamic_reconfigure {
             if(type_ == "string") {
                 double f;
                 if(sscanf(str_val_.c_str(), "%lf", &f) == 0) {
-                    return hash<string>()(str_val_);
+                    return boost::hash<string>()(str_val_);
                 }
                 return f;
             } else if(type_ == "bool") {return bool_val_ ? 1.0 : 0.0;}

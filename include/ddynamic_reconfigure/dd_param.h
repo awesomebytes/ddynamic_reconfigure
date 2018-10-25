@@ -16,7 +16,7 @@ using namespace std;
 namespace ddynamic_reconfigure {
     class DDParam;// declaration for the sake of order.
     // this is the pointer to any type of Dynamic Dynamic parameter.
-    typedef shared_ptr<DDParam> DDPtr;
+    typedef boost::shared_ptr<DDParam> DDPtr;
     /**
      * @brief The DDParam class is the abstraction of all parameter types, and is the template for creating them.
      *        At this point, not much is known about the parameter, but the following:

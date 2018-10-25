@@ -24,7 +24,7 @@ namespace ddynamic_reconfigure {
     // this is a map from the DDParam name to the object. Acts like a set with a search function.
     typedef map<string,DDPtr> DDMap;
     // the function you will use a lot
-    typedef function<void(const DDMap&,int)> DDFunc;
+    typedef boost::function<void(const DDMap&,int)> DDFunc;
 
     /**
      * @brief The DDynamicReconfigure class is the main class responsible for keeping track of parameters basic properties,
@@ -209,7 +209,7 @@ namespace ddynamic_reconfigure {
          /**
           * @brief the use defined callback to call when parameters are updated.
           */
-          shared_ptr<DDFunc> callback_;
+          boost::shared_ptr<DDFunc> callback_;
           #pragma clang diagnostic push // CLion suppressor
           #pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
          /**

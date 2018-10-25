@@ -136,7 +136,7 @@ namespace ddynamic_reconfigure {
             ret << "'description': '" << desc << "', ";
             ret << "'srcfile': '/does/this/really/matter.cfg', "; // the answer is no. This is useless.
             ret << "'cconsttype': 'const int', ";
-            ret << "'value': '" << value << "', ";
+            ret << "'value': " << value << ", ";
             ret << "'ctype': 'int', ";
             ret << "'type': 'int', ";
             ret << "'name': '" << name << "'";
