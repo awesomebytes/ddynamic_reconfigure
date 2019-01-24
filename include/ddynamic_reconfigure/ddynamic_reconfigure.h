@@ -120,7 +120,7 @@ namespace ddynamic_reconfigure {
          template<class T>
          void start(void(T::*callback)(const DDMap&, int), T *obj) {
             DDFunc f = bind(callback,obj,_1,_2);
-            start();
+            start(f);
          }
 
         /**
