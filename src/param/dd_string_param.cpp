@@ -14,7 +14,7 @@ namespace ddynamic_reconfigure {
         desc.name  = name_;
         desc.level = level_;
         desc.description = desc_;
-        desc.type = "string";
+        desc.type = "str";
         group.parameters.push_back(desc);
     }
 
