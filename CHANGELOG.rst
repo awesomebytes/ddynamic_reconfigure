@@ -1,6 +1,10 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Changelog for package ddynamic_reconfigure
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+1.0.0 (2019-03-26)
+------------------
+* Updated authors, maintainers, and licence
+* Bug fixes
 
 0.0.6 (2018-07-02)
 ------------------
