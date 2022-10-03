@@ -394,7 +394,7 @@ namespace ddynamic_reconfigure {
         for (int i = 1; i < top; i++) {
             next = (unsigned int) random();
             or_sum |= next;
-            dd.add(new DDInt((format("param_%d") % i).str(), next,"level_param", 0));
+            dd.add(new DDInt("param_" + std::to_string(i), next, "level_param", 0));
         }
         dd.start(callback);
 
@@ -404,7 +404,7 @@ namespace ddynamic_reconfigure {
         dynamic_reconfigure::Reconfigure srv;
         dynamic_reconfigure::IntParameter int_param;
         for (int i = 1; i < top; i++) {
-            int_param.name = (format("param_%d") % i).str();
+            int_param.name = "param_" + std::to_string(i);
             int_param.value = 1;
             srv.request.config.ints.push_back(int_param);
         }
