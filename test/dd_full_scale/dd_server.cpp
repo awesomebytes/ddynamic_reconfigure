@@ -53,7 +53,7 @@ int main(int argc, char **argv) {
 
     // Actual Server Node code
     ROS_INFO("Spinning node");
-    function<bool(TutorialParams::Request &, TutorialParams::Response &)> f = bind(paramService, _1, _2, dd);
+    boost::function<bool(TutorialParams::Request &, TutorialParams::Response &)> f = boost::bind(paramService, _1, _2, dd);
     ServiceServer checkParam = nh.advertiseService("get_params", f);
     MultiThreadedSpinner spinner(2);
     spinner.spin();
