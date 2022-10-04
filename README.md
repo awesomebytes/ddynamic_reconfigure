@@ -1,5 +1,8 @@
 DDynamic-Reconfigure
 ==================================================
+
+PAL has released their version: https://github.com/pal-robotics/ddynamic_reconfigure
+
 [![Build Status](http://venus:8080/view/Integration%20Jobs/job/I40-ddynamic_reconfigure-dubnium-devel_dubnium/badge/icon)](http://venus:8080/view/Integration%20Jobs/job/I40-ddynamic_reconfigure-dubnium-devel_dubnium/)
 
 The DDynamic-Reconfigure package (or 2D-reconfig) is a **C++** based extension to Dynamic-Reconfigure (or 1D-reconfig) which allows C++ based nodes to self-initiate.
