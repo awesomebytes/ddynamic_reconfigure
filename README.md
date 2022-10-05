@@ -1,6 +1,6 @@
 DDynamic-Reconfigure
 ==================================================
-[![Build Status](http://venus:8080/view/Integration%20Jobs/job/I40-ddynamic_reconfigure-dubnium-devel_dubnium/badge/icon)](http://venus:8080/view/Integration%20Jobs/job/I40-ddynamic_reconfigure-dubnium-devel_dubnium/)
+<!-- [![Build Status](http://venus:8080/view/Integration%20Jobs/job/I40-ddynamic_reconfigure-dubnium-devel_dubnium/badge/icon)](http://venus:8080/view/Integration%20Jobs/job/I40-ddynamic_reconfigure-dubnium-devel_dubnium/) -->
 
 The DDynamic-Reconfigure package (or 2D-reconfig) is a **C++** based extension to Dynamic-Reconfigure (or 1D-reconfig) which allows C++ based nodes to self-initiate.
 
@@ -229,7 +229,7 @@ While these two code snippets accomplish the exact same things, they do so in di
   
   This will be discussed more thoroughly on "Architecture".
   
-* Enums are dramatically different. 
+* Enums are dramatically different.
     * 2D-reconfig uses well defined standard C++ objects for its dictionaries,
       while 1D-reconfig defines its own constants and enums. This allows you to use well known and reliable API instead of a loosely defined one.
   
@@ -326,7 +326,7 @@ This has three main uses:
 1. Values can represent all basic data-types. This means that arguments that need something relatively similar from all basic data-types can now just use the value in its argument.
    This also goes for when you need to return something that is of different data-types from different classes (one can only return integer, other can only return strings).
 
-2. Values can be explicitly converted to all basic data-types they wrap. 
+2. Values can be explicitly converted to all basic data-types they wrap.
    This means that converting an int to a string is far easier.
 
 3. Values store the type they were instantiated with. This can be tested against to get the original piece of data the value stored.
@@ -362,7 +362,7 @@ At this point, not much is known about the parameter, but the following:
 Other than storing data, the parameter also has specialised methods to interact with DDynamicReconfigure in order to apply changes and send them.
 These methods should not be touched by the user.
 
-Since this class is abstract, the class has multiple implementations whicch are not directly exposed but are used,
+Since this class is abstract, the class has multiple implementations which are not directly exposed but are used,
 so its worth checking out their descriptions.
 
 While this class is abstract, it does have one implemented thing, and that is its stream operator (`<<`) which can be freely used.
@@ -498,17 +498,17 @@ As a bonus, you also get two static class-less methods: ``get`` and ``at``.
 
 Like the API section shows, there are only 3 major classes: ``DDValue``,``DDParam``,``DDynamicReconfigure``.
 
-The DDValue class is a concrete class which should not be inherited, since it wraps physical values. 
+The DDValue class is a concrete class which should not be inherited, since it wraps physical values.
 Each instance stores 5 values: one for each type is can handle, and one to store the type.
 When a value is instantiated, the value is stored in its raw form according to the chosen type,
 and the rest stay with default values. When the value is accessed only then is the value converted (but not saved!)
 
-The DDParam interface class is an abstract class which should be implemented. 
+The DDParam interface class is an abstract class which should be implemented.
 Its basic implementations (int,double,bool,string) have already been implemented in the standard package.
 These basic forms can also be further extended. For example, DDEnum **extends** DDInt because it has all of the features DDInt has.
 This can be done to other DDParam implementations, and you can also further extend the extended classes (for example, DDInvertibleEnum).
 An example is given at the Extension section if you want to look more into this.
-When anny DDParam implementation is extended, the user has access to everything within the object so that he can do what he needs to.
+When any DDParam implementation is extended, the user has access to everything within the object so that he can do what he needs to.
 
 The DDynamicReconfigure class is the concrete class that does the work against ROS and interfaces with the user.
 Unlike DDValue, this class can be extended, and it has an internal API that can aid users who wish to extend this class.

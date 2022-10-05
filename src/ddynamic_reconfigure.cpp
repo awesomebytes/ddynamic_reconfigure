@@ -9,7 +9,6 @@
 #include <ddynamic_reconfigure/ddynamic_reconfigure.h>
 #include <boost/foreach.hpp>
 
-using namespace boost;
 namespace ddynamic_reconfigure {
 
     DDynamicReconfigure::DDynamicReconfigure(ros::NodeHandle &nh) {
@@ -40,7 +39,7 @@ namespace ddynamic_reconfigure {
         ConfigDescription conf_desc = makeDescription(); // registers defaults and max/min descriptions.
         Config conf = makeConfig(); // the actual config file in C++ form.
 
-        function<bool(Reconfigure::Request& req, Reconfigure::Response& rsp)> callback = bind(&internalCallback,this,_1,_2);
+        boost::function<bool(Reconfigure::Request& req, Reconfigure::Response& rsp)> callback = boost::bind(&internalCallback,this,_1,_2);
         // publishes Config and ConfigDescription.
         set_service_ = nh_.advertiseService("set_parameters", callback); // this allows changes to the parameters
 
@@ -98,13 +97,13 @@ namespace ddynamic_reconfigure {
     //    }
 
     void DDynamicReconfigure::setCallback(DDFunc callback) {
-        callback_ = make_shared<function<void(const DDMap&,int)> >(callback);
+        callback_ = boost::make_shared<boost::function<void(const DDMap&,int)> >(callback);
     };
 
     void defaultCallback(const DDMap&,int) {};
 
     void DDynamicReconfigure::clearCallback() {
-        callback_ = make_shared<DDFunc>(&defaultCallback);
+        callback_ = boost::make_shared<DDFunc>(&defaultCallback);
     };
 
     // Private function: internal callback used by the service to call our lovely callback.

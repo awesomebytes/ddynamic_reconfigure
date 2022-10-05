@@ -29,7 +29,7 @@ namespace ddynamic_reconfigure {
      *        Other than storing data, the parameter also has specialised methods to interact with DDynamicReconfigure in order to apply changes and send them.
      *        These methods should not be touched by the user.
      *
-     *        Since this class is abstract, the class has multiple implementations whicch are not directly exposed but are used,
+     *        Since this class is abstract, the class has multiple implementations which are not directly exposed but are used,
      *        so its worth checking out their descriptions.
      *
      *        While this class is abstract, it does have one implemented thing, and that is its stream operator (`<<`) which can be freely used.
@@ -47,6 +47,8 @@ namespace ddynamic_reconfigure {
      */
     class DDParam {
     public:
+        DDParam() = default;
+        virtual ~DDParam() = default;
 
         /**
          * @brief gets the name of the parameter, that is, the ID used in the program when requesting it.

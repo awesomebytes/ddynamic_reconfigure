@@ -1,9 +1,7 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.0.2)
 project(ddynamic_reconfigure)
 
 find_package(catkin REQUIRED COMPONENTS roscpp message_generation)
-
-set(CMAKE_CXX_STANDARD 98)
 
 ##############
 ## Services ##
