@@ -1,3 +1,8 @@
+**Please use PAL Robotics' released ddynamic_reconfigure: https://github.com/pal-robotics/ddynamic_reconfigure**
+
+This repository is a historical fork, any new users should use PAL Robotics' officially released project (available up to Noetic), previous users may want to compare both in case there are differences and decide if to migrate.
+
+
 DDynamic-Reconfigure
 ==================================================
 <!-- [![Build Status](http://venus:8080/view/Integration%20Jobs/job/I40-ddynamic_reconfigure-dubnium-devel_dubnium/badge/icon)](http://venus:8080/view/Integration%20Jobs/job/I40-ddynamic_reconfigure-dubnium-devel_dubnium/) -->
